@@ -1,6 +1,4 @@
-from flask import request, jsonify
 from config import app, db
-from models import User
 from routes import user_blueprint
 
 if __name__ == "__main__":

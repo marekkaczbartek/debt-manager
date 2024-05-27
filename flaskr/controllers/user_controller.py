@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from config import app, db
+from config import db
 from models import User
 from services.user_service import get_user_by_email
 

@@ -1,5 +1,4 @@
 from config import db
-from dataclasses import dataclass
 
 
 class User(db.Model):
