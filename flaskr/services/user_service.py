@@ -1,4 +1,4 @@
-from models import GroupMember, User
+from models import User
 from config import db
 from services import group_service
 
@@ -30,7 +30,4 @@ def delete_user(user_id: int):
 
 
 def get_groups_from_user(user_id: int):
-    return [
-        group_service.get_group_by_id(member.group_id)
-        for member in GroupMember.query.filter_by(user_id=user_id).all()
-    ]
+    return User.query.get(user_id).groups

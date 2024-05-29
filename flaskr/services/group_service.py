@@ -1,4 +1,4 @@
-from models import Group, GroupMember
+from models import Group
 from config import db
 from services import user_service
 
@@ -18,13 +18,15 @@ def create_group(name: str):
 
 
 def add_user_to_group(user_id: int, group_id: int):
-    group_member = GroupMember(user_id, group_id)
-    db.session.add(group_member)
+    group = get_group_by_id(group_id)
+    user = user_service.get_user_by_id(user_id)
+
+    if not group or not user:
+        raise Exception("Group or user not found")
+
+    group.users.append(user)
     db.session.commit()
 
 
 def get_users_from_group(group_id: int):
-    return [
-        user_service.get_user_by_id(member.user_id)
-        for member in GroupMember.query.filter_by(group_id=group_id).all()
-    ]
+    return get_group_by_id(group_id).users

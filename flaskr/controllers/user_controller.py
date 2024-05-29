@@ -44,5 +44,4 @@ def delete_user(user_id: int):
 def get_groups_from_user(user_id: int):
     if not user_service.get_user_by_id(user_id):
         return jsonify({"error": "User not found"}), 404
-    groups = user_service.get_groups_from_user(user_id)
-    return [group.to_json() for group in groups]
+    return [group.to_json() for group in user_service.get_groups_from_user(user_id)]
