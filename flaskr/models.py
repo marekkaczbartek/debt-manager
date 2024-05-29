@@ -47,6 +47,9 @@ class Group(db.Model):
     def __init__(self, name):
         self.name = name
 
+    def to_json(self):
+        return {"id": self.id, "name": self.name}
+
 
 class GroupMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
