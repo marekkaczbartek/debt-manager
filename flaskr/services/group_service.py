@@ -30,3 +30,10 @@ def add_user_to_group(user_id: int, group_id: int):
 
 def get_users_from_group(group_id: int):
     return get_group_by_id(group_id).users
+
+
+def delete_group(group_id: int):
+    group = get_group_by_id(group_id)
+    if group:
+        db.session.delete(group)
+        db.session.commit()

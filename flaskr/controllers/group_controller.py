@@ -47,3 +47,12 @@ def add_user_to_group(user_id: int, group_id: int):
 def get_users_from_group(group_id: int):
     users = group_service.get_users_from_group(group_id)
     return [user.to_json() for user in users]
+
+
+def delete_group(group_id: int):
+    group = group_service.delete_group(group_id)
+
+    if not group:
+        return jsonify({"error": "Group not found"}), 404
+
+    return jsonify({"message": "Group deleted"}), 204
