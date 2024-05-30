@@ -1,6 +1,5 @@
 from models import User
 from config import db
-from services import group_service
 
 
 def get_users():
@@ -31,3 +30,17 @@ def delete_user(user_id: int):
 
 def get_groups_from_user(user_id: int):
     return User.query.get(user_id).groups
+
+
+def get_user_debts(user_id: int):
+    return User.query.get(user_id).debts
+
+
+def get_user_loans(user_id: int):
+    return User.query.get(user_id).loans
+
+
+def get_user_balance(user_id: int):
+    debt_balance = sum([debt.amount for debt in get_user_debts(user_id)])
+    loan_balance = sum([loan.amount for loan in get_user_loans(user_id)])
+    return loan_balance - debt_balance

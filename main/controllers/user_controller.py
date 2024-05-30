@@ -45,3 +45,20 @@ def get_groups_from_user(user_id: int):
     if not user_service.get_user_by_id(user_id):
         return jsonify({"error": "User not found"}), 404
     return [group.to_json() for group in user_service.get_groups_from_user(user_id)]
+
+
+def get_user_debts(user_id: int):
+    if not user_service.get_user_by_id(user_id):
+        return jsonify({"error": "User not found"}), 404
+    return [debt.to_json() for debt in user_service.get_user_debts(user_id)]
+
+
+def get_user_loans(user_id: int):
+    if not user_service.get_user_by_id(user_id):
+        return jsonify({"error": "User not found"}), 404
+    return [debt.to_json() for debt in user_service.get_user_loans(user_id)]
+
+
+def get_user_balance(user_id: int):
+    balance = user_service.get_user_balance(user_id)
+    return jsonify({"balance": balance}), 200
