@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers import group_controller, debt_controller
+from controllers import group_controller
 
 group_blueprint = Blueprint("group", __name__)
 
@@ -16,7 +16,4 @@ group_blueprint.route("/<int:group_id>/users", methods=["GET"])(
 )
 group_blueprint.route("/<int:group_id>", methods=["DELETE"])(
     group_controller.delete_group
-)
-group_blueprint.route("/<int:group_id>/debt", methods=["POST"])(
-    debt_controller.add_debt
 )
