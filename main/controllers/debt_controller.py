@@ -71,4 +71,6 @@ def add_debt_for_multiple_users():
             user_owing_id=user_owing_id,
         )
 
+    debt_service.simplify_debts(group_id)
+
     return jsonify({"message": "Debts added"}), 201

@@ -17,3 +17,9 @@ group_blueprint.route("/<int:group_id>/users", methods=["GET"])(
 group_blueprint.route("/<int:group_id>", methods=["DELETE"])(
     group_controller.delete_group
 )
+group_blueprint.route("/<int:group_id>/balance", methods=["GET"])(
+    group_controller.get_group_balance_list
+)
+group_blueprint.route("/<int:group_id>/debts", methods=["GET"])(
+    group_controller.get_group_debts
+)

@@ -56,3 +56,11 @@ def delete_group(group_id: int):
         return jsonify({"error": "Group not found"}), 404
 
     return jsonify({"message": "Group deleted"}), 204
+
+
+def get_group_balance_list(group_id: int):
+    return jsonify(group_service.get_group_balance_list(group_id)), 200
+
+
+def get_group_debts(group_id: int):
+    return [debt.to_json() for debt in group_service.get_group_debts(group_id)], 200

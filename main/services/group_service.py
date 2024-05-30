@@ -1,4 +1,6 @@
-from models import Group
+from itertools import islice
+from typing import List
+from models import Debt, Group
 from config import db
 from services import user_service
 
@@ -37,3 +39,18 @@ def delete_group(group_id: int):
     if group:
         db.session.delete(group)
         db.session.commit()
+
+
+def get_group_balance_list(group_id: int) -> List[dict]:
+    group = get_group_by_id(group_id)
+    return [
+        {
+            "user_id": user.id,
+            "balance": user_service.get_user_balance_in_group(user.id, group_id),
+        }
+        for user in group.users
+    ]
+
+
+def get_group_debts(group_id: int) -> List[Debt]:
+    return Debt.query.filter_by(group_id=group_id, settled=False).all()
