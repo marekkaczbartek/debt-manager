@@ -1,10 +1,10 @@
-import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import "./output.css";
 
 function App() {
     return (
         <>
-            <Header title="Hello, world!" />
-            <h1>Hello, world!</h1>
+            <Navbar />
         </>
     );
 }
