@@ -17,7 +17,7 @@ function LoginForm() {
 
     const { email, password } = formData;
     const [errors, setErrors] = useState<Partial<FormData>>({});
-    const { setToken } = useAuth;
+    const { setToken } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

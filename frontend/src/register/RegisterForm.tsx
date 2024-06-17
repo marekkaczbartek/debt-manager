@@ -87,7 +87,7 @@ function RegisterForm() {
                 <div className="border-gray-300 border-2 text-black px-14 py-8 rounded-lg w-96">
                     <form onSubmit={handleSubmit}>
                         <h1 className="text-2xl font-bold text-center mb-10">
-                            {React.version}
+                            Register
                         </h1>
                         <div className="my-5">
                             <input

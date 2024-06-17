@@ -9,7 +9,7 @@ import React, {
 
 export const AuthContext = createContext<{
     token: string | null;
-    setToken: (newToken: string) => void;
+    setToken: (newToken: string | null) => void;
 }>({
     token: null,
     setToken: () => {},
@@ -22,7 +22,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [token, setToken_] = useState(localStorage.getItem("token"));
 
-    const setToken = (newToken: string) => {
+    const setToken = (newToken: string | null) => {
         setToken_(newToken);
     };
 
