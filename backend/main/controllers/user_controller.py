@@ -12,13 +12,7 @@ def get_users():
 def get_current_user():
     current_email: str = get_jwt_identity()
     current_user = user_service.get_user_by_email(current_email)
-    return jsonify(
-        {
-            "username": current_user.username,
-            "email": current_user.email,
-            "password": current_user.password,
-        }
-    ), "200"
+    return current_user.to_json()
 
 
 def get_user_by_id(user_id: int):

@@ -36,7 +36,12 @@ class User(db.Model):
         self.email = email
 
     def to_json(self):
-        return {"id": self.id, "username": self.username, "email": self.email}
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "password": self.password,
+        }
 
 
 class Transaction(db.Model):

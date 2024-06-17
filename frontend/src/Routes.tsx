@@ -4,9 +4,12 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Home from "./Home";
 import LoginForm from "./login/LoginForm";
 import RegisterForm from "./register/RegisterForm";
+import useUser from "./useUser";
 
 const Routes = () => {
     const { token } = useAuth();
+    const [user, setUser] = useUser();
+
     // Define routes accessible only to authenticated users
     const routesForAuthenticatedOnly = [
         {
@@ -15,7 +18,7 @@ const Routes = () => {
             children: [
                 {
                     path: "/home",
-                    element: <Home />,
+                    element: <Home {...user} />,
                 },
                 {
                     path: "/logout",

@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterNavbar from "../register/RegisterNavbar";
 import { useAuth } from "../AuthContext";
+import Footer from "../components/Footer";
 
 interface FormData {
     email: string;
@@ -117,6 +118,7 @@ function LoginForm() {
                     </form>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

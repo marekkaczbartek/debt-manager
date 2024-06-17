@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterNavbar from "./RegisterNavbar";
+import Footer from "../components/Footer";
 
 interface FormData {
     username: string;
@@ -156,6 +157,7 @@ function RegisterForm() {
                     </form>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

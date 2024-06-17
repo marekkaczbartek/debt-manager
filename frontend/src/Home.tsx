@@ -1,11 +1,12 @@
 import UserCard from "./components/UserCard";
 import { User } from "../interfaces/User";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function Home(user?: User) {
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar />
+            <Navbar username={user?.username} />
             <div className="flex-grow flex items-center justify-center">
                 <div className="flex flex-col">
                     <div className="flex-grow">
@@ -21,6 +22,7 @@ function Home(user?: User) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }
