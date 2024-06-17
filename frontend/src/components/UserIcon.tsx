@@ -1,10 +1,10 @@
 export interface UserIconProps {
-    username: string;
+    username?: string;
     imageUrl?: string;
 }
 
 const UserIcon: React.FC<UserIconProps> = ({ username, imageUrl }) => {
-    const firstLetter = username.charAt(0).toUpperCase();
+    const firstLetter = username ? username.charAt(0).toUpperCase() : "?";
 
     return (
         <div className="relative w-10 h-10">

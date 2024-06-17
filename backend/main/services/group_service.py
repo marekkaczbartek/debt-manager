@@ -1,6 +1,6 @@
 from itertools import islice
 from typing import List
-from models import Debt, Group
+from models import Transaction, Group
 from config import db
 from services import user_service
 
@@ -52,5 +52,5 @@ def get_group_balance_list(group_id: int) -> List[dict]:
     ]
 
 
-def get_group_debts(group_id: int) -> List[Debt]:
-    return Debt.query.filter_by(group_id=group_id, settled=False).all()
+def get_group_debts(group_id: int) -> List[Transaction]:
+    return Transaction.query.filter_by(group_id=group_id, settled=False).all()

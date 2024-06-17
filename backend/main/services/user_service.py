@@ -1,4 +1,4 @@
-from models import User, Debt
+from models import User, Transaction
 from config import db
 
 
@@ -33,11 +33,11 @@ def get_groups_from_user(user_id: int):
 
 
 def get_user_debts_in_group(user_id: int, group_id: int):
-    return Debt.query.filter_by(user_owing_id=user_id, group_id=group_id).all()
+    return Transaction.query.filter_by(user_owing_id=user_id, group_id=group_id).all()
 
 
 def get_user_loans_in_group(user_id: int, group_id: int):
-    return Debt.query.filter_by(user_owed_id=user_id, group_id=group_id).all()
+    return Transaction.query.filter_by(user_owed_id=user_id, group_id=group_id).all()
 
 
 def get_user_balance_in_group(user_id: int, group_id):

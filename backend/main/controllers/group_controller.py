@@ -62,5 +62,8 @@ def get_group_balance_list(group_id: int):
     return jsonify(group_service.get_group_balance_list(group_id)), 200
 
 
-def get_group_debts(group_id: int):
-    return [debt.to_json() for debt in group_service.get_group_debts(group_id)], 200
+def get_group_transactions(group_id: int):
+    return [
+        transaction.to_json()
+        for transaction in group_service.get_group_transactions(group_id)
+    ], 200

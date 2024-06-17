@@ -2,7 +2,7 @@ import React from "react";
 import UserIcon from "./UserIcon";
 
 export interface NavbarProps {
-    username: string;
+    username?: string;
 }
 
 // src/components/Navbar.js

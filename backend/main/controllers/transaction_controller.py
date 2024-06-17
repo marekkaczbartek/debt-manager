@@ -1,8 +1,9 @@
+from services import transaction_service
 from flask import request, jsonify
-from services import debt_service, user_service, group_service
+from services import user_service, group_service, bill_service
 
 
-# def add_debt():
+# def add_transaction():
 #     data = request.get_json()
 
 #     user_owed = user_service.get_user_by_id(data["user_owed_id"])
@@ -16,7 +17,7 @@ from services import debt_service, user_service, group_service
 #     if user_owed not in group.users or user_owing not in group.users:
 #         return jsonify({"error": "User not in group"}), 400
 #     try:
-#         debt_service.add_debt(
+#         transaction_service.add_transaction(
 #             data["amount"],
 #             data["description"],
 #             data["group_id"],
@@ -25,15 +26,15 @@ from services import debt_service, user_service, group_service
 #         )
 #     except Exception as e:
 #         return {"error": str(e)}, 400
-#     return jsonify({"message": "Debt added"}), 201
+#     return jsonify({"message": "Transaction added"}), 201
 
 
-def get_debts():
-    debts = debt_service.get_debts()
-    return jsonify(debts), 200
+def get_transactions():
+    transactions = transaction_service.get_transactions()
+    return jsonify(transactions), 200
 
 
-def add_debt_for_multiple_users():
+def add_transaction_for_multiple_users():
     data = request.get_json()
     amount = data["amount"]
     user_owed_id = data["user_owed_id"]
@@ -60,17 +61,17 @@ def add_debt_for_multiple_users():
         if user_owing not in group.users:
             return jsonify({"error": "User not in group"}), 400
 
-    debts = debt_service.divide_debt(amount, user_owing_ids)
+    bill_service.add_bill(amount, description, group_id, user_owed_id)
+    transactions = transaction_service.divide_transaction(amount, user_owing_ids)
 
-    for sub_amount, user_owing_id in debts:
-        debt_service.add_debt(
+    for sub_amount, user_owing_id in transactions:
+        transaction_service.add_transaction(
             amount=sub_amount,
-            description=description,
             group_id=group_id,
             user_owed_id=user_owed_id,
             user_owing_id=user_owing_id,
         )
 
-    debt_service.simplify_debts(group_id)
+    transaction_service.simplify_transactions(group_id)
 
-    return jsonify({"message": "Debts added"}), 201
+    return jsonify({"message": "Transactions added"}), 201
