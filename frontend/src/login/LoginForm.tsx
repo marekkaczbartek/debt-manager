@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
     email: string;
@@ -14,6 +16,8 @@ function LoginForm() {
     const { email, password } = formData;
 
     const [errors, setErrors] = useState<Partial<FormData>>({});
+
+    const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -45,7 +49,7 @@ function LoginForm() {
         }
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         // const validationErrors =;
         // if (Object.keys(validationErrors).length === 0) {
@@ -55,8 +59,24 @@ function LoginForm() {
         // } else {
         //     setErrors(validationErrors);
         // }
+        try {
+            const loginRes = await axios.post(
+                "http://localhost:5000/api/login",
+                {
+                    email: formData.email,
+                    password: formData.password,
+                }
+            );
 
-        alert("Form submitted!");
+            if (loginRes.status === 200) {
+                const token = loginRes.data.token;
+                console.log(token);
+                // alert("User logged in");
+                navigate("/home", { replace: true });
+            }
+        } catch (err) {
+            alert("Wrong email or password");
+        }
     };
 
     return (

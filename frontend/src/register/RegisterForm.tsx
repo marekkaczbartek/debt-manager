@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { redirect } from "react-router-dom";
+import { uesNavigate, useNavigate } from "react-router-dom";
 
 interface FormData {
     username: string;
@@ -16,6 +16,8 @@ function RegisterForm() {
         password: "",
         confirmPassword: "",
     });
+
+    const navigate = useNavigate();
 
     const { username, email, password, confirmPassword } = formData;
 
@@ -78,8 +80,7 @@ function RegisterForm() {
             );
 
             if (userCreationRes.status === 201) {
-                alert("Form submitted!");
-                redirect("http://127.0.0.1:5173/home");
+                navigate("/home", { replace: true });
             }
         } catch (err) {
             alert("Error creating a user");
@@ -90,7 +91,7 @@ function RegisterForm() {
         <div className="border-gray-300 border-2 text-black px-14 py-8 rounded-lg w-96">
             <form onSubmit={handleSubmit}>
                 <h1 className="text-2xl font-bold text-center mb-10">
-                    Register
+                    {React.version}
                 </h1>
                 <div className="my-5">
                     <input
