@@ -1,10 +1,24 @@
 from flask import request, jsonify
 from services import user_service
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 def get_users():
     users = user_service.get_users()
     return [user.to_json() for user in users]
+
+
+@jwt_required()
+def get_current_user():
+    current_email: str = get_jwt_identity()
+    current_user = user_service.get_user_by_email(current_email)
+    return jsonify(
+        {
+            "username": current_user.username,
+            "email": current_user.email,
+            "password": current_user.password,
+        }
+    ), "200"
 
 
 def get_user_by_id(user_id: int):

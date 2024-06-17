@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from config import app
 from datetime import datetime, timedelta
-import jwt
+from flask_jwt_extended import create_access_token
 
 from services.auth_service import validate_user
 
@@ -15,15 +15,5 @@ def login():
     if not validate_user(user.get("email"), user.get("password")):
         return jsonify({"message": "Wrong email or password"}), 400
 
-    token = jwt.encode(
-        {
-            "email": user.get("email"),
-            "expiration": str(datetime.now() + timedelta(seconds=120)),
-        },
-        app.config["SECRET_KEY"],
-        algorithm="HS256",
-    )
-    return jsonify(
-        {"token": jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])}
-        # user
-    )
+    token = create_access_token(identity=user.get("email"))
+    return jsonify({"token": token})

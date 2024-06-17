@@ -1,5 +1,6 @@
 import React from "react";
 import UserIcon from "./UserIcon";
+import { Link } from "react-router-dom";
 
 export interface NavbarProps {
     username?: string;
@@ -10,9 +11,19 @@ const Navbar: React.FC<NavbarProps> = ({ username }) => {
     return (
         <nav className="border-gray-300 border-solid border-b px-8 py-4 font-body font-bold">
             <ul className="container flex justify-end items-center space-x-6">
-                <li>Home</li>
+                {/* <li>Home</li>
                 <li>About</li>
-                <li>Services</li>
+                <li>Services</li> */}
+                <li>
+                    <Link
+                        to="/login"
+                        onClick={() => {
+                            sessionStorage.removeItem("token");
+                        }}
+                    >
+                        Logout
+                    </Link>
+                </li>
                 <li>
                     <UserIcon username={username} />
                 </li>

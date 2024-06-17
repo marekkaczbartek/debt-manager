@@ -14,7 +14,6 @@ function LoginForm() {
     });
 
     const { email, password } = formData;
-
     const [errors, setErrors] = useState<Partial<FormData>>({});
 
     const navigate = useNavigate();
@@ -51,14 +50,6 @@ function LoginForm() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        // const validationErrors =;
-        // if (Object.keys(validationErrors).length === 0) {
-        //     console.log("Form submitted:", formData);
-        //     alert("Form submitted!");
-        //     // Here you can handle form submission (e.g., send data to an API)
-        // } else {
-        //     setErrors(validationErrors);
-        // }
         try {
             const loginRes = await axios.post(
                 "http://localhost:5000/api/login",
@@ -70,7 +61,7 @@ function LoginForm() {
 
             if (loginRes.status === 200) {
                 const token = loginRes.data.token;
-                console.log(token);
+
                 // alert("User logged in");
                 navigate("/home", { replace: true });
             }

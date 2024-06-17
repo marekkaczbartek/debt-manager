@@ -6,10 +6,12 @@ from controllers.user_controller import (
     get_user_by_id,
     delete_user,
     get_user_balance_in_group,
+    get_current_user,
 )
 
 user_blueprint = Blueprint("user", __name__)
 
+user_blueprint.route("/current", methods=["GET"])(get_current_user)
 user_blueprint.route("/", methods=["GET"])(get_users)
 user_blueprint.route("/", methods=["POST"])(create_user)
 user_blueprint.route("/<int:user_id>", methods=["GET"])(get_user_by_id)

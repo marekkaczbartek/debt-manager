@@ -1,41 +1,17 @@
-import { useEffect, useState } from "react";
-import UserCard, { UserCardProps } from "./components/UserCard";
-import axios from "axios";
+import UserCard from "./components/UserCard";
+import { User } from "../interfaces/User";
+import { useNavigate } from "react-router-dom";
 
-function Home() {
-    const [user, setUser] = useState<UserCardProps | null>(null);
-    const [balance, setBalance] = useState(0);
-
-    const fetchData = async (userId: string, groupId: string) => {
-        try {
-            const userRes = await axios.get(
-                `http://localhost:5000/api/users/${userId}`
-            );
-            // const balanceRes = await axios.get(
-            //     `http://localhost:5000/users/${userId}/balance/${groupId}`
-            // );
-            setUser(userRes.data);
-            // setBalance(balanceRes.data.balance);
-        } catch (error) {
-            console.error("Error fetching user: ", error);
-        }
-    };
-
-    useEffect(() => {
-        const userId = "1";
-        const groupId = "1";
-        fetchData(userId, groupId);
-    }, []);
-
+function Home(user?: User) {
+    const navigate = useNavigate();
+    if (!user?.username || !user.email) navigate("/login");
     return (
         <div className="flex flex-col">
             <div className="flex-grow">
                 {user ? (
                     <UserCard
-                        id={user.id}
                         username={user.username}
                         email={user.email}
-                        password={user.password}
                         balance={100}
                     />
                 ) : (

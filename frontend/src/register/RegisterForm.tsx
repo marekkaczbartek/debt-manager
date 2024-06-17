@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { uesNavigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
     username: string;
