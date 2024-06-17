@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { redirect } from "react-router-dom";
 
 interface FormData {
     username: string;
@@ -7,7 +9,7 @@ interface FormData {
     confirmPassword: string;
 }
 
-const RegisterForm: React.FC = () => {
+function RegisterForm() {
     const [formData, setFormData] = useState<FormData>({
         username: "",
         email: "",
@@ -21,77 +23,137 @@ const RegisterForm: React.FC = () => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        // Update the specific field in formData
         setFormData({
             ...formData,
             [name]: value,
         });
+
+        // Validate only the changed field
+        const validationError = validateField(name as keyof FormData, value);
+        setErrors({
+            ...errors,
+            [name]: validationError,
+        });
     };
 
-    const validate = () => {
-        const newErrors: Partial<FormData> = {};
-        if (!formData.username) newErrors.username = "Username is required";
-        if (!formData.email) newErrors.email = "Email is required";
-        if (!formData.password) newErrors.password = "Password is required";
-        if (formData.password !== formData.confirmPassword)
-            newErrors.confirmPassword = "Passwords must match";
-        return newErrors;
+    const validateField = (
+        fieldName: keyof FormData,
+        value: string
+    ): string | undefined => {
+        switch (fieldName) {
+            case "username":
+                return value.trim() === "" ? "Username is required" : undefined;
+            case "email":
+                return value.trim() === "" ? "Email is required" : undefined;
+            case "password":
+                return value.trim() === "" ? "Password is required" : undefined;
+            case "confirmPassword":
+                return formData.password !== value
+                    ? "Passwords must match"
+                    : undefined;
+            default:
+                return undefined;
+        }
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length === 0) {
-            console.log("Form submitted:", formData);
-            // Here you can handle form submission (e.g., send data to an API)
-        } else {
-            setErrors(validationErrors);
+        // const validationErrors =;
+        // if (Object.keys(validationErrors).length === 0) {
+        //     console.log("Form submitted:", formData);
+        //     alert("Form submitted!");
+        //     // Here you can handle form submission (e.g., send data to an API)
+        // } else {
+        //     setErrors(validationErrors);
+        // }
+        try {
+            const userCreationRes = await axios.post(
+                "http://localhost:5000/api/users/",
+                {
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password,
+                }
+            );
+
+            if (userCreationRes.status === 201) {
+                alert("Form submitted!");
+                redirect("http://127.0.0.1:5173/home");
+            }
+        } catch (err) {
+            alert("Error creating a user");
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1 className="text-2xl font-bold text-center mb-10">Register</h1>
-            <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                className="p-2 border my-3 rounded-lg w-full"
-            />
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="border my-3 rounded-lg p-2 w-full"
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="p-2 border my-3 rounded-lg w-full"
-            />
-            <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="p-2 border my-3 rounded-lg w-full"
-            />
-            <button
-                type="submit"
-                className="font-semibold bg-black text-white my-5 py-2 w-full rounded-lg  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black"
-                disabled={!username || !email || !password || !confirmPassword}
-            >
-                Register
-            </button>
-        </form>
+        <div className="border-gray-300 border-2 text-black px-14 py-8 rounded-lg w-96">
+            <form onSubmit={handleSubmit}>
+                <h1 className="text-2xl font-bold text-center mb-10">
+                    Register
+                </h1>
+                <div className="my-5">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                    />
+                    <span className="text-xs text-red-700">
+                        {errors.username}
+                    </span>
+                </div>
+                <div className="my-5">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                    />
+                    <span className="text-xs text-red-700">{errors.email}</span>
+                </div>
+                <div className="my-5">
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                    />
+                    <span className="text-xs text-red-700">
+                        {errors.password}
+                    </span>
+                </div>
+                <div className="my-5">
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                    />
+                    <span className="text-xs text-red-700">
+                        {errors.confirmPassword}
+                    </span>
+                </div>
+                <button
+                    type="submit"
+                    className="font-semibold bg-black text-white my-5 py-2 w-full rounded-lg  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black"
+                    disabled={
+                        !username || !email || !password || !confirmPassword
+                    }
+                >
+                    Register
+                </button>
+            </form>
+        </div>
     );
-};
+}
 
 export default RegisterForm;

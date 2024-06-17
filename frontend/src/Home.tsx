@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../src/components/Navbar";
 import UserCard, { UserCardProps } from "./components/UserCard";
 import axios from "axios";
 
@@ -10,13 +9,13 @@ function Home() {
     const fetchData = async (userId: string, groupId: string) => {
         try {
             const userRes = await axios.get(
-                `http://localhost:5000/users/${userId}`
+                `http://localhost:5000/api/users/${userId}`
             );
-            const balanceRes = await axios.get(
-                `http://localhost:5000/users/${userId}/balance/${groupId}`
-            );
+            // const balanceRes = await axios.get(
+            //     `http://localhost:5000/users/${userId}/balance/${groupId}`
+            // );
             setUser(userRes.data);
-            setBalance(balanceRes.data.balance);
+            // setBalance(balanceRes.data.balance);
         } catch (error) {
             console.error("Error fetching user: ", error);
         }
@@ -29,8 +28,7 @@ function Home() {
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <Navbar username={user?.username} />
+        <div className="flex flex-col">
             <div className="flex-grow">
                 {user ? (
                     <UserCard
@@ -38,7 +36,7 @@ function Home() {
                         username={user.username}
                         email={user.email}
                         password={user.password}
-                        balance={balance}
+                        balance={100}
                     />
                 ) : (
                     <p>Loading...</p>

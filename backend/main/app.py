@@ -5,11 +5,11 @@ from routes.transaction_routes import transaction_blueprint
 
 if __name__ == "__main__":
     with app.app_context():
-        db.drop_all()
+        # db.drop_all()
         db.create_all()
 
-    app.register_blueprint(user_blueprint, url_prefix="/users")
-    app.register_blueprint(group_blueprint, url_prefix="/groups")
-    app.register_blueprint(transaction_blueprint, url_prefix="/transactions")
+    app.register_blueprint(user_blueprint, url_prefix="/api/users")
+    app.register_blueprint(group_blueprint, url_prefix="/api/groups")
+    app.register_blueprint(transaction_blueprint, url_prefix="/api/transactions")
 
     app.run(debug=True)

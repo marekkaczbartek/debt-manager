@@ -1,17 +1,14 @@
-import UserIcon from "../components/UserIcon";
+import { Link } from "react-router-dom";
 
 function RegisterNavbar() {
     return (
-        <nav className="border-gray-300 border-solid border-b px-8 py-4 font-body font-bold">
-            <ul className="container flex justify-end items-center space-x-6">
+        <nav className="flex border-gray-300 border-solid border-b px-8 py-4 font-body font-bold h-16">
+            <ul className="container flex justify-end items-center align-middle space-x-6">
                 <li>
-                    <button>Register</button>
+                    <Link to="/register">Register</Link>
                 </li>
                 <li>
-                    <button>Login</button>
-                </li>
-                <li>
-                    <UserIcon />
+                    <Link to="/login">Login</Link>
                 </li>
             </ul>
         </nav>
