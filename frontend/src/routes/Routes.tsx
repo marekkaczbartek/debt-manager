@@ -3,12 +3,14 @@ import { useAuth } from "../context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { UnprotectedRoute } from "./UnprotectedRoute";
 import Home from "../home/Home";
-import LoginForm from "../login/LoginForm";
-import RegisterForm from "../register/RegisterForm";
-import GroupForm from "../GroupForm";
+import LoginForm from "../forms/LoginForm";
+import RegisterForm from "../forms/RegisterForm";
+import GroupForm from "../forms/GroupForm";
 import { User } from "../../interfaces/User";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import GroupDashboard from "../GroupDashboard";
+import AddUserForm from "../forms/AddUserForm";
 
 const Routes = () => {
     const { accessToken } = useAuth();
@@ -18,11 +20,11 @@ const Routes = () => {
         const fetchUser = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/users/current"
+                    "http://127.0.0.1:5000/api/users/current"
                 );
                 const { id, username, email, password } = res.data;
                 const balance = await axios.get(
-                    `http://localhost:5000/api/users/${id}/balance`
+                    `http://127.0.0.1:5000/api/users/${id}/balance`
                 );
 
                 setUser({
@@ -52,6 +54,14 @@ const Routes = () => {
                 {
                     path: "/groups/new",
                     element: <GroupForm {...user} />,
+                },
+                {
+                    path: "/groups/:groupId",
+                    element: <GroupDashboard {...user} />,
+                },
+                {
+                    path: "/groups/:groupId/add/user",
+                    element: <AddUserForm {...user} />,
                 },
             ],
         },

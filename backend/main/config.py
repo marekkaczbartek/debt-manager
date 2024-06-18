@@ -10,11 +10,14 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5173"}})
+CORS(
+    app,
+    resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
+)
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=10)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 

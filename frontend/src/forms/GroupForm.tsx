@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../interfaces/User";
+import { User } from "../../interfaces/User";
+import Button from "../components/Button";
+import FormTemplate from "../components/FormTemplate";
 
 interface FormData {
     groupName: string;
@@ -68,7 +70,7 @@ function GroupForm(user: User) {
     };
 
     return (
-        <div className="border-gray-300 border-2 text-black px-14 py-8 rounded-lg w-96">
+        <FormTemplate>
             <form onSubmit={handleSubmit}>
                 <h1 className="text-2xl font-bold text-center mb-10">
                     Create Group
@@ -86,15 +88,11 @@ function GroupForm(user: User) {
                         {errors.groupName}
                     </span>
                 </div>
-                <button
-                    type="submit"
-                    className="font-semibold bg-black text-white my-5 py-2 w-full rounded-lg  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black"
-                    disabled={!groupName}
-                >
+                <Button type="submit" className="w-full" disabled={!groupName}>
                     Create
-                </button>
+                </Button>
             </form>
-        </div>
+        </FormTemplate>
     );
 }
 

@@ -22,6 +22,13 @@ def get_user_by_id(user_id: int):
     return jsonify({"error": "User not found"}), 404
 
 
+def get_user_by_email(user_email: str):
+    user = user_service.get_user_by_email(user_email)
+    if user:
+        return user.to_json()
+    return jsonify({"error": "User not found"}), 404
+
+
 def create_user():
     data = request.get_json()
     username = data.get("username")
@@ -49,7 +56,7 @@ def delete_user(user_id: int):
     return jsonify({"error": "User not found"}), 404
 
 
-@jwt_required()
+# @jwt_required()
 def get_groups_from_user(user_id: int):
     if not user_service.get_user_by_id(user_id):
         return jsonify({"error": "User not found"}), 404

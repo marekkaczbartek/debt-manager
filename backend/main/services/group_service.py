@@ -27,6 +27,9 @@ def add_user_to_group(user_id: int, group_id: int):
     if not group or not user:
         raise Exception("Group or user not found")
 
+    if user in group.users:
+        raise Exception("User already in group")
+
     group.users.append(user)
     db.session.commit()
 
@@ -40,6 +43,7 @@ def delete_group(group_id: int):
     if group:
         db.session.delete(group)
         db.session.commit()
+    return group
 
 
 def get_group_balance_list(group_id: int) -> List[dict]:

@@ -17,9 +17,6 @@ const AuthNavbar: React.FC<NavbarProps> = ({ username }) => {
                     <Link to="/home">Home</Link>
                 </li>
                 <li>
-                    <Link to="/groups/new">Create Group</Link>
-                </li>
-                <li>
                     <button
                         onClick={() => {
                             setAccessToken(null);

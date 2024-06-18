@@ -3,6 +3,7 @@ import { User } from "../../interfaces/User";
 import Group from "../../interfaces/Group";
 import { useEffect, useState } from "react";
 import GroupCard from "../components/GroupCard";
+import PlaceholderGroupCard from "../components/PlaceholderGroupCard";
 
 function Home(user: User) {
     const [groups, setGroups] = useState<Group[]>([]);
@@ -36,7 +37,7 @@ function Home(user: User) {
                         Your balance: {user.balance}
                     </h2>
                     <div className="flex flex-row justify-evenly">
-                        {groups.map((group: Group) => {
+                        {groups.slice(0, 3).map((group: Group) => {
                             return (
                                 <div key={group.id}>
                                     <GroupCard
@@ -50,6 +51,15 @@ function Home(user: User) {
                                 </div>
                             );
                         })}
+                        {Array(Math.max(3 - groups.length, 0))
+                            .fill(null)
+                            .map((_, index) => {
+                                return (
+                                    <div key={index}>
+                                        <PlaceholderGroupCard></PlaceholderGroupCard>
+                                    </div>
+                                );
+                            })}
                     </div>
                 </>
             )}
