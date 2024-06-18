@@ -112,12 +112,15 @@ class Debt(db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    owner = db.relationship("User", backref="group_owner", lazy=True)
     users = db.relationship("User", secondary=group_user, backref="groups")
     debts = db.relationship("Debt", backref="group", lazy=True)
     transactions = db.relationship("Transaction", backref="group", lazy=True)
 
-    def __init__(self, name):
+    def __init__(self, name, owner_id):
         self.name = name
+        self.owner_id = owner_id
 
     def to_json(self):
-        return {"id": self.id, "name": self.name}
+        return {"id": self.id, "name": self.name, "owner": self.owner.to_json()}

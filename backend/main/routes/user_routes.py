@@ -1,6 +1,7 @@
 from flask import Blueprint
 from controllers.user_controller import (
     get_groups_from_user,
+    get_user_balance,
     get_users,
     create_user,
     get_user_by_id,
@@ -20,3 +21,4 @@ user_blueprint.route("/<int:user_id>/groups", methods=["GET"])(get_groups_from_u
 user_blueprint.route("/<int:user_id>/balance/<int:group_id>", methods=["GET"])(
     get_user_balance_in_group
 )
+user_blueprint.route("/<int:user_id>/balance", methods=["GET"])(get_user_balance)
