@@ -82,72 +82,76 @@ function RegisterForm() {
     };
 
     return (
-        <FormTemplate>
-            <form onSubmit={handleSubmit}>
-                <h1 className="text-2xl font-bold text-center mb-10">
-                    Register
-                </h1>
-                <div className="my-5">
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">
-                        {errors.username}
-                    </span>
-                </div>
-                <div className="my-5">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">{errors.email}</span>
-                </div>
-                <div className="my-5">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">
-                        {errors.password}
-                    </span>
-                </div>
-                <div className="my-5">
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm Password"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">
-                        {errors.confirmPassword}
-                    </span>
-                </div>
-                <Button
-                    type="submit"
-                    disabled={
-                        !username || !email || !password || !confirmPassword
-                    }
-                    className="w-full"
-                >
-                    Register
-                </Button>
-            </form>
-        </FormTemplate>
+        <div className="flex flex-grow justify-center items-center">
+            <FormTemplate>
+                <form onSubmit={handleSubmit}>
+                    <h1 className="text-2xl font-bold text-center mb-10">
+                        Register
+                    </h1>
+                    <div className="my-5">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.username}
+                        </span>
+                    </div>
+                    <div className="my-5">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.email}
+                        </span>
+                    </div>
+                    <div className="my-5">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.password}
+                        </span>
+                    </div>
+                    <div className="my-5">
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.confirmPassword}
+                        </span>
+                    </div>
+                    <Button
+                        type="submit"
+                        disabled={
+                            !username || !email || !password || !confirmPassword
+                        }
+                        className="w-full"
+                    >
+                        Register
+                    </Button>
+                </form>
+            </FormTemplate>
+        </div>
     );
 }
 

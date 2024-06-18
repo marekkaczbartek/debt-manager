@@ -70,29 +70,35 @@ function GroupForm(user: User) {
     };
 
     return (
-        <FormTemplate>
-            <form onSubmit={handleSubmit}>
-                <h1 className="text-2xl font-bold text-center mb-10">
-                    Create Group
-                </h1>
-                <div className="my-5">
-                    <input
-                        type="text"
-                        name="groupName"
-                        placeholder="Name"
-                        value={formData.groupName}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">
-                        {errors.groupName}
-                    </span>
-                </div>
-                <Button type="submit" className="w-full" disabled={!groupName}>
-                    Create
-                </Button>
-            </form>
-        </FormTemplate>
+        <div className="flex flex-grow justify-center items-center">
+            <FormTemplate>
+                <form onSubmit={handleSubmit}>
+                    <h1 className="text-2xl font-bold text-center mb-10">
+                        Create Group
+                    </h1>
+                    <div className="my-5">
+                        <input
+                            type="text"
+                            name="groupName"
+                            placeholder="Name"
+                            value={formData.groupName}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.groupName}
+                        </span>
+                    </div>
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={!groupName}
+                    >
+                        Create
+                    </Button>
+                </form>
+            </FormTemplate>
+        </div>
     );
 }
 

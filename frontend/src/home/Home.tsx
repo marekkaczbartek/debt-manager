@@ -28,41 +28,43 @@ function Home(user: User) {
     }, [user]);
 
     return (
-        <div className="flex-grow">
-            {!user.username ? (
-                <h1 className="text-center">Loading...</h1>
-            ) : (
-                <>
-                    <h2 className="text-3xl font-bold text-center my-6">
-                        Your balance: {user.balance}
-                    </h2>
-                    <div className="flex flex-row justify-evenly">
-                        {groups.slice(0, 3).map((group: Group) => {
-                            return (
-                                <div key={group.id}>
-                                    <GroupCard
-                                        id={group.id}
-                                        groupName={group.name}
-                                        groupBalance={100}
-                                        onClickDelete={() =>
-                                            onClickDelete(group)
-                                        }
-                                    ></GroupCard>
-                                </div>
-                            );
-                        })}
-                        {Array(Math.max(3 - groups.length, 0))
-                            .fill(null)
-                            .map((_, index) => {
+        <div className="flex flex-grow justify-center items-center">
+            <div className="flex-grow">
+                {!user.username ? (
+                    <h1 className="text-center">Loading...</h1>
+                ) : (
+                    <>
+                        <h2 className="text-3xl font-bold text-center my-6">
+                            Your balance: {user.balance}
+                        </h2>
+                        <div className="flex flex-row justify-evenly">
+                            {groups.slice(0, 3).map((group: Group) => {
                                 return (
-                                    <div key={index}>
-                                        <PlaceholderGroupCard></PlaceholderGroupCard>
+                                    <div key={group.id}>
+                                        <GroupCard
+                                            id={group.id}
+                                            groupName={group.name}
+                                            groupBalance={100}
+                                            onClickDelete={() =>
+                                                onClickDelete(group)
+                                            }
+                                        ></GroupCard>
                                     </div>
                                 );
                             })}
-                    </div>
-                </>
-            )}
+                            {Array(Math.max(3 - groups.length, 0))
+                                .fill(null)
+                                .map((_, index) => {
+                                    return (
+                                        <div key={index}>
+                                            <PlaceholderGroupCard></PlaceholderGroupCard>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    </>
+                )}
+            </div>
         </div>
     );
 }

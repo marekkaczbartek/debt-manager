@@ -14,9 +14,7 @@ export const ProtectedRoute = (user: User) => {
     return (
         <div className="min-h-screen flex flex-col">
             <AuthNavbar username={user.username} />
-            <div className="flex-grow flex items-center justify-center">
-                <Outlet />
-            </div>
+            <Outlet />
             <Footer />
         </div>
     );

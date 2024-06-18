@@ -77,42 +77,48 @@ function LoginForm() {
     };
 
     return (
-        <FormTemplate>
-            <form onSubmit={handleSubmit}>
-                <h1 className="text-2xl font-bold text-center mb-10">Login</h1>
-                <div className="my-5">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">{errors.email}</span>
-                </div>
-                <div className="my-5">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">
-                        {errors.password}
-                    </span>
-                </div>
-                <Button
-                    type="submit"
-                    disabled={!email || !password}
-                    className="w-full"
-                >
-                    Login
-                </Button>
-            </form>
-        </FormTemplate>
+        <div className="flex flex-grow justify-center items-center">
+            <FormTemplate>
+                <form onSubmit={handleSubmit}>
+                    <h1 className="text-2xl font-bold text-center mb-10">
+                        Login
+                    </h1>
+                    <div className="my-5">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.email}
+                        </span>
+                    </div>
+                    <div className="my-5">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.password}
+                        </span>
+                    </div>
+                    <Button
+                        type="submit"
+                        disabled={!email || !password}
+                        className="w-full"
+                    >
+                        Login
+                    </Button>
+                </form>
+            </FormTemplate>
+        </div>
     );
 }
 

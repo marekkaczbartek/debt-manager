@@ -93,28 +93,34 @@ function AddUserForm() {
     };
 
     return (
-        <FormTemplate>
-            <form onSubmit={handleSubmit}>
-                <h1 className="text-2xl font-extrabold text-center mb-6">
-                    Add User To
-                </h1>
-                <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
-                <div className="my-5">
-                    <input
-                        type="text"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="px-3 py-2.5 border rounded-lg w-full text-sm"
-                    />
-                    <span className="text-xs text-red-700">{errors.email}</span>
-                </div>
-                <Button type="submit" className="w-full" disabled={!email}>
-                    Add
-                </Button>
-            </form>
-        </FormTemplate>
+        <div className="flex flex-grow justify-center items-center">
+            <FormTemplate>
+                <form onSubmit={handleSubmit}>
+                    <h1 className="text-2xl font-extrabold text-center mb-6">
+                        Add User To
+                    </h1>
+                    <h2 className="text-2xl text-center mb-10">
+                        {group?.name}
+                    </h2>
+                    <div className="my-5">
+                        <input
+                            type="text"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+                        />
+                        <span className="text-xs text-red-700">
+                            {errors.email}
+                        </span>
+                    </div>
+                    <Button type="submit" className="w-full" disabled={!email}>
+                        Add
+                    </Button>
+                </form>
+            </FormTemplate>
+        </div>
     );
 }
 
