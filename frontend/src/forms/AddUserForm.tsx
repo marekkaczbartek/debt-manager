@@ -88,7 +88,7 @@ function AddUserForm() {
                 navigate(`/groups/${groupId}`, { replace: true });
             }
         } catch (err) {
-            alert("Error creating a group");
+            alert("Error adding a user");
         }
     };
 

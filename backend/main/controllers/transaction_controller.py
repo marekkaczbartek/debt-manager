@@ -1,6 +1,7 @@
+from services import debt_service
 from services import transaction_service
 from flask import request, jsonify
-from services import user_service, group_service, bill_service
+from services import user_service, group_service
 
 
 # def add_transaction():
@@ -34,6 +35,11 @@ def get_transactions():
     return jsonify(transactions), 200
 
 
+def delete_transactions():
+    transaction_service.delete_transactions()
+    return jsonify({"message": "Transactions deleted"}), 204
+
+
 def add_transaction_for_multiple_users():
     data = request.get_json()
     amount = data["amount"]
@@ -61,7 +67,7 @@ def add_transaction_for_multiple_users():
         if user_owing not in group.users:
             return jsonify({"error": "User not in group"}), 400
 
-    bill_service.add_bill(amount, description, group_id, user_owed_id)
+    # debt_service.add_debt(amount, description, group_id, user_owed_id)
     transactions = transaction_service.divide_transaction(amount, user_owing_ids)
 
     for sub_amount, user_owing_id in transactions:

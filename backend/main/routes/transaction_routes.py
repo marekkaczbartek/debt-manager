@@ -9,3 +9,7 @@ transaction_blueprint.route("/", methods=["POST"])(
 transaction_blueprint.route("/", methods=["GET"])(
     transaction_controller.get_transactions
 )
+
+transaction_blueprint.route("/", methods=["DELETE"])(
+    transaction_controller.delete_transactions
+)

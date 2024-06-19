@@ -16,6 +16,11 @@ def get_transactions() -> List[dict]:
     return [transaction.to_json() for transaction in transactions]
 
 
+def delete_transactions() -> None:
+    Transaction.query.delete()
+    db.session.commit()
+
+
 def divide_transaction(amount, user_owing_ids) -> List[tuple[float, int]]:
     sub_amount = round(amount / len(user_owing_ids), 2)
     return [(sub_amount, user_owing_id) for user_owing_id in user_owing_ids]
@@ -28,18 +33,16 @@ def simplify_transactions(group_id: int) -> List[Transaction]:
         balance1 = balance_list[i]
         for balance2 in islice(balance_list, i + 1, len(balance_list)):
             if balance1["balance"] * balance2["balance"] < 0:
-                if balance1["balance"] < 0:
+                if balance1["balance"] > 0:
                     transaction = Transaction(
-                        amount=-balance1["balance"],
-                        description="",
+                        amount=balance1["balance"],
                         group_id=group_id,
                         user_owed_id=balance1["user_id"],
                         user_owing_id=balance2["user_id"],
                     )
                 else:
                     transaction = Transaction(
-                        amount=balance1["balance"],
-                        description="",
+                        amount=-balance1["balance"],
                         group_id=group_id,
                         user_owed_id=balance2["user_id"],
                         user_owing_id=balance1["user_id"],
@@ -53,4 +56,4 @@ def simplify_transactions(group_id: int) -> List[Transaction]:
         db.session.add(transaction)
 
     db.session.commit()
-    return [d.to_json() for d in simplified_transactions]
+    return [t.to_json() for t in simplified_transactions]

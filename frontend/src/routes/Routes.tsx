@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import GroupDashboard from "../GroupDashboard";
 import AddUserForm from "../forms/AddUserForm";
+import AddTransactionForm from "../forms/AddTransactionForm";
 
 const Routes = () => {
     const { accessToken } = useAuth();
@@ -61,7 +62,11 @@ const Routes = () => {
                 },
                 {
                     path: "/groups/:groupId/add/user",
-                    element: <AddUserForm {...user} />,
+                    element: <AddUserForm />,
+                },
+                {
+                    path: "/groups/:groupId/add/transaction",
+                    element: <AddTransactionForm {...user} />,
                 },
             ],
         },

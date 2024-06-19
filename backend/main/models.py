@@ -59,9 +59,8 @@ class Transaction(db.Model):
         "User", foreign_keys=[user_owing_id], back_populates="owing"
     )
 
-    def __init__(self, amount, description, group_id, user_owed_id, user_owing_id):
+    def __init__(self, amount, group_id, user_owed_id, user_owing_id):
         self.amount = amount
-        self.description = description
         self.group_id = group_id
         self.user_owed_id = user_owed_id
         self.user_owing_id = user_owing_id
@@ -86,7 +85,9 @@ class Debt(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
     user_owed_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-    user_owed = db.relationship("User", foreign_keys=[user_owed_id], backref="debts")
+    user_owed = db.relationship(
+        "User", foreign_keys=[user_owed_id], backref="debts_owed"
+    )
     users_owing = db.relationship(
         "User", secondary=debt_user, backref="debts_owing", lazy=True
     )
