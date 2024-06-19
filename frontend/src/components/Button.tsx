@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   className,
 }) => {
-  const buttonClassName = `font-semibold bg-black text-white my-5 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black ${className}`;
+  const buttonClassName = `font-semibold bg-black text-white py-2 px-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black hover:opacity-70 ${className}`;
 
   return (
     <button

@@ -96,9 +96,7 @@ function AddUserForm() {
     <div className="flex flex-grow justify-center items-center">
       <FormTemplate>
         <form onSubmit={handleSubmit}>
-          <h1 className="text-2xl font-extrabold text-center mb-6">
-            Add User To
-          </h1>
+          <h1 className="text-2xl font-extrabold text-center mb-6">Add User</h1>
           <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
           <div className="my-5">
             <input

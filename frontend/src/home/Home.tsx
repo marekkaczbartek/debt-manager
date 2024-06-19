@@ -4,6 +4,7 @@ import Group from "../../interfaces/Group";
 import { useEffect, useState } from "react";
 import GroupCard from "../components/GroupCard";
 import PlaceholderGroupCard from "../components/PlaceholderGroupCard";
+import Button from "../components/Button";
 
 function Home(user: User) {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -46,8 +47,15 @@ function Home(user: User) {
         ) : (
           <>
             <h2 className="text-3xl font-bold text-center my-6">
-              Your balance: {user.balance}
+              {user.balance === 0
+                ? "You are even!"
+                : user.balance > 0
+                ? `You are owed ${user.balance}$`
+                : `You owe ${Math.abs(user.balance)}$`}
             </h2>
+            <div className="text-center">
+              <Button>Add Group</Button>
+            </div>
             <div className="flex flex-row justify-evenly">
               {groups.slice(0, 3).map((group: Group) => {
                 return (

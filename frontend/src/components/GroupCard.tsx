@@ -30,7 +30,7 @@ const GroupCard = (group: GroupCardProps) => {
           <p className="text-xl">You owe {Math.abs(group.groupBalance)}$</p>
         )}
       </span>
-      <Button onClick={group.onClickDelete} className="w-1/2">
+      <Button onClick={group.onClickDelete} className="w-1/2 my-3">
         Delete
       </Button>
     </CardTemplate>
