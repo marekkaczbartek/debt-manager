@@ -5,17 +5,17 @@ import AuthNavbar from "../components/AuthNavbar";
 import Footer from "../components/Footer";
 
 export const ProtectedRoute = (user: User) => {
-    const { accessToken } = useAuth();
+  const { accessToken } = useAuth();
 
-    if (!accessToken) {
-        return <Navigate to="/login" />;
-    }
+  if (!accessToken) {
+    return <Navigate to="/login" />;
+  }
 
-    return (
-        <div className="min-h-screen flex flex-col">
-            <AuthNavbar username={user.username} />
-            <Outlet />
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="min-h-screen flex flex-col">
+      <AuthNavbar username={user.username} />
+      <Outlet />
+      <Footer />
+    </div>
+  );
 };

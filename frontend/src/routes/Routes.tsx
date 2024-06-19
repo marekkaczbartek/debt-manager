@@ -14,90 +14,88 @@ import AddUserForm from "../forms/AddUserForm";
 import AddTransactionForm from "../forms/AddTransactionForm";
 
 const Routes = () => {
-    const { accessToken } = useAuth();
-    const [user, setUser] = useState<User>();
+  const { accessToken } = useAuth();
+  const [user, setUser] = useState<User>();
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get(
-                    "http://127.0.0.1:5000/api/users/current"
-                );
-                const { id, username, email, password } = res.data;
-                const balance = await axios.get(
-                    `http://127.0.0.1:5000/api/users/${id}/balance`
-                );
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("http://127.0.0.1:5000/api/users/current");
+        const { id, username, email, password } = res.data;
+        const balance = await axios.get(
+          `http://127.0.0.1:5000/api/users/${id}/balance`
+        );
 
-                setUser({
-                    id,
-                    username,
-                    email,
-                    password,
-                    balance: balance.data.balance,
-                });
-            } catch (err) {
-                throw new Error("Error fetching current user");
-            }
-        };
-        fetchUser();
-    }, [accessToken]);
+        setUser({
+          id,
+          username,
+          email,
+          password,
+          balance: balance.data.balance,
+        });
+      } catch (err) {
+        throw new Error("Error fetching current user");
+      }
+    };
+    fetchUser();
+  }, [accessToken]);
 
-    // Define routes accessible only to authenticated users
-    const routesForAuthenticatedOnly = [
+  // Define routes accessible only to authenticated users
+  const routesForAuthenticatedOnly = [
+    {
+      path: "/",
+      element: <ProtectedRoute {...user} />, // Wrap the component in ProtectedRoute
+      children: [
         {
-            path: "/",
-            element: <ProtectedRoute {...user} />, // Wrap the component in ProtectedRoute
-            children: [
-                {
-                    path: "/home",
-                    element: <Home {...user} />,
-                },
-                {
-                    path: "/groups/new",
-                    element: <GroupForm {...user} />,
-                },
-                {
-                    path: "/groups/:groupId",
-                    element: <GroupDashboard {...user} />,
-                },
-                {
-                    path: "/groups/:groupId/add/user",
-                    element: <AddUserForm />,
-                },
-                {
-                    path: "/groups/:groupId/add/transaction",
-                    element: <AddTransactionForm {...user} />,
-                },
-            ],
+          path: "/home",
+          element: <Home {...user} />,
         },
-    ];
-
-    // Define routes accessible only to non-authenticated users
-    const routesForNotAuthenticatedOnly = [
         {
-            path: "/",
-            element: <UnprotectedRoute />,
-            children: [
-                {
-                    path: "/login",
-                    element: <LoginForm />,
-                },
-                {
-                    path: "/register",
-                    element: <RegisterForm />,
-                },
-            ],
+          path: "/groups/new",
+          element: <GroupForm {...user} />,
         },
-    ];
+        {
+          path: "/groups/:groupId",
+          element: <GroupDashboard {...user} />,
+        },
+        {
+          path: "/groups/:groupId/add/user",
+          element: <AddUserForm />,
+        },
+        {
+          path: "/groups/:groupId/add/transaction",
+          element: <AddTransactionForm {...user} />,
+        },
+      ],
+    },
+  ];
 
-    // Combine and conditionally include routes based on authentication status
-    const router = createBrowserRouter([
-        ...(!accessToken ? routesForNotAuthenticatedOnly : []),
-        ...routesForAuthenticatedOnly,
-    ]);
+  // Define routes accessible only to non-authenticated users
+  const routesForNotAuthenticatedOnly = [
+    {
+      path: "/",
+      element: <UnprotectedRoute />,
+      children: [
+        {
+          path: "/login",
+          element: <LoginForm />,
+        },
+        {
+          path: "/register",
+          element: <RegisterForm />,
+        },
+      ],
+    },
+  ];
 
-    // Provide the router configuration using RouterProvider
-    return <RouterProvider router={router} />;
+  // Combine and conditionally include routes based on authentication status
+  const router = createBrowserRouter([
+    ...(!accessToken ? routesForNotAuthenticatedOnly : []),
+    ...routesForAuthenticatedOnly,
+  ]);
+
+  // Provide the router configuration using RouterProvider
+  return <RouterProvider router={router} />;
 };
 
 export default Routes;

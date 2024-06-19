@@ -86,7 +86,7 @@ class Debt(db.Model):
     user_owed_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     user_owed = db.relationship(
-        "User", foreign_keys=[user_owed_id], backref="debts_owed"
+        "User", foreign_keys=[user_owed_id], backref="debts_owed", lazy=True
     )
     users_owing = db.relationship(
         "User", secondary=debt_user, backref="debts_owing", lazy=True
@@ -117,7 +117,9 @@ class Group(db.Model):
     owner = db.relationship("User", backref="group_owner", lazy=True)
     users = db.relationship("User", secondary=group_user, backref="groups")
     debts = db.relationship("Debt", backref="group", lazy=True)
-    transactions = db.relationship("Transaction", backref="group", lazy=True)
+    transactions = db.relationship(
+        "Transaction", backref="group", lazy=True, cascade="all,delete"
+    )
 
     def __init__(self, name, owner_id):
         self.name = name
