@@ -1,5 +1,6 @@
 from models import User, Transaction
 from config import db
+from bcrypt import hashpw, gensalt
 
 
 def get_users():
@@ -15,7 +16,8 @@ def get_user_by_email(email: str) -> User:
 
 
 def create_user(username: str, password: str, email: str) -> User:
-    user = User(username, password, email)
+    hashed_password = hashpw(password.encode("utf-8"), gensalt())
+    user = User(username, hashed_password, email)
     db.session.add(user)
     db.session.commit()
     return user
@@ -27,6 +29,11 @@ def delete_user(user_id: int) -> User:
         db.session.delete(user)
         db.session.commit()
     return user
+
+
+def delete_users():
+    User.query.delete()
+    db.session.commit()
 
 
 def get_groups_from_user(user_id: int):

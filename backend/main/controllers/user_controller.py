@@ -52,12 +52,17 @@ def create_user():
     return jsonify({"message": "User created", "data": user.to_json()}), 201
 
 
-@jwt_required()
+# @jwt_required()
 def delete_user(user_id: int):
     user = user_service.delete_user(user_id)
     if user:
         return jsonify({"message": "User deleted", "data": user.to_json()})
     return jsonify({"error": "User not found"}), 404
+
+
+def delete_users():
+    user_service.delete_users()
+    return jsonify({"message": "All users deleted"})
 
 
 @jwt_required()

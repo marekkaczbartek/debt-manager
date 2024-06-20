@@ -9,33 +9,31 @@ interface FormData {
   email: string;
 }
 
-function AddUserForm() {
-  const { groupId } = useParams();
-  const fetchGroup = async (groupId: string | undefined) => {
-    try {
-      const res = await axios.get(
-        `http://127.0.0.1:5000/api/groups/${groupId}`
-      );
-      return res.data;
-    } catch {
-      alert("Error fetching group");
-    }
-  };
-  const [group, setGroup] = useState<Group | null>(null);
+function AddUserForm(group: Group) {
+  console.log(group);
+  // const fetchGroup = async (groupId: string | undefined) => {
+  //   try {
+  //     const res = await axios.get(
+  //       `http://127.0.0.1:5000/api/groups/${groupId}`
+  //     );
+  //     return res.data;
+  //   } catch {
+  //     alert("Error fetching group");
+  //   }
+  // };
+  // const [group, setGroup] = useState<Group | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchGroup(groupId);
-      setGroup(data);
-    };
-    fetchData();
-  }, [groupId]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await fetchGroup(groupId);
+  //     setGroup(data);
+  //   };
+  //   fetchData();
+  // }, [groupId]);
 
   const [formData, setFormData] = useState<FormData>({
     email: "",
   });
-
-  const navigate = useNavigate();
 
   const { email } = formData;
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -77,16 +75,11 @@ function AddUserForm() {
 
       const user = userRes.data;
 
-      const res = await axios.post(
-        `http://127.0.0.1:5000/api/groups/${groupId}/users`,
-        {
-          user_id: user.id,
-        }
-      );
+      await axios.post(`http://127.0.0.1:5000/api/groups/${group.id}/users`, {
+        user_id: user.id,
+      });
 
-      if (res.status === 201) {
-        navigate(`/groups/${groupId}`, { replace: true });
-      }
+      window.location.reload();
     } catch (err) {
       alert("Error adding a user");
     }
@@ -94,26 +87,24 @@ function AddUserForm() {
 
   return (
     <div className="flex flex-grow justify-center items-center">
-      <FormTemplate>
-        <form onSubmit={handleSubmit}>
-          <h1 className="text-2xl font-extrabold text-center mb-6">Add User</h1>
-          <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
-          <div className="my-5">
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="px-3 py-2.5 border rounded-lg w-full text-sm"
-            />
-            <span className="text-xs text-red-700">{errors.email}</span>
-          </div>
-          <Button type="submit" className="w-full" disabled={!email}>
-            Add
-          </Button>
-        </form>
-      </FormTemplate>
+      <form onSubmit={handleSubmit} className="w-full">
+        <h1 className="text-2xl font-extrabold text-center mb-6">Add User</h1>
+        <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
+        <div className="my-5">
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+          />
+          <span className="text-xs text-red-700">{errors.email}</span>
+        </div>
+        <Button type="submit" className="w-full" disabled={!email}>
+          Add
+        </Button>
+      </form>
     </div>
   );
 }

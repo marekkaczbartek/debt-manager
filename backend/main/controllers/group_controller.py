@@ -71,6 +71,11 @@ def delete_group(group_id: int):
     return jsonify({"message": "Group deleted"}), 204
 
 
+def delete_groups():
+    group_service.delete_groups()
+    return jsonify({"message": "All groups deleted"})
+
+
 @jwt_required()
 def delete_user_from_group(group_id: int, user_id: int):
     group = group_service.delete_user_from_group(user_id, group_id)

@@ -11,7 +11,7 @@ This is a simple debt manager web app, that allows users to keep track of their 
 
 ## Environment Variables
 
-- SECRET_KEY: JWT secret key
+- SECRET_KEY - JWT secret key
 
 ## Run
 

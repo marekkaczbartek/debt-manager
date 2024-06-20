@@ -46,6 +46,11 @@ def delete_group(group_id: int):
     return group
 
 
+def delete_groups():
+    Group.query.delete()
+    db.session.commit()
+
+
 def delete_user_from_group(user_id: int, group_id: int):
     group = get_group_by_id(group_id)
     user = user_service.get_user_by_id(user_id)

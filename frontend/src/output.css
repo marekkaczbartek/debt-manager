@@ -698,10 +698,6 @@ video {
   margin-right: 1rem;
 }
 
-.mr-6{
-  margin-right: 1.5rem;
-}
-
 .mt-8{
   margin-top: 2rem;
 }
@@ -802,10 +798,6 @@ video {
 
 .cursor-pointer{
   cursor: pointer;
-}
-
-.list-disc{
-  list-style-type: disc;
 }
 
 .flex-row{

@@ -43,6 +43,20 @@ function Dashboard(user: User) {
     fetchGroups();
   }, [user]);
 
+  function chunkArrayIntoThrees(arr) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += 3) {
+      const chunk = arr.slice(i, i + 3);
+      while (chunk.length < 3) {
+        chunk.push(null);
+      }
+      result.push(chunk);
+    }
+    return result;
+  }
+
+  const rows = chunkArrayIntoThrees(groups);
+
   return !user.username || user.balance === undefined ? (
     <Loading />
   ) : (
@@ -57,10 +71,10 @@ function Dashboard(user: User) {
         </h2>
         <div className="text-center">
           <Link to="/groups/new">
-            <Button disabled={groups.length === 3}>Create Group</Button>
+            <Button>Create Group</Button>
           </Link>
         </div>
-        <div className="flex flex-row justify-evenly">
+        {/* <div className="flex flex-row justify-evenly">
           {groups.slice(0, 3).map((group: Group) => {
             return (
               <div key={group.id}>
@@ -82,7 +96,32 @@ function Dashboard(user: User) {
                 </div>
               );
             })}
-        </div>
+        </div> */}
+
+        {Array(Math.ceil(groups.length / 3))
+          .fill(null)
+          .map((_, index) => {
+            return (
+              <div key={index} className="my-4">
+                <div className="flex flex-row justify-evenly">
+                  {rows[index].map((group: Group) => {
+                    return group !== null ? (
+                      <div key={group.id}>
+                        <GroupCard
+                          id={group.id}
+                          groupName={group.name}
+                          groupBalance={group.balance}
+                          onClickDelete={() => onClickDelete(group)}
+                        ></GroupCard>
+                      </div>
+                    ) : (
+                      <PlaceholderGroupCard />
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

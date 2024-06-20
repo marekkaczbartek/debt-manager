@@ -12,37 +12,41 @@ interface FormData {
   user_ids: number[];
 }
 
-function AddTransactionForm(user: User) {
-  const { groupId } = useParams();
+interface AddTransactionFormProps {
+  user: User;
+  group: Group;
+}
 
-  const [group, setGroup] = useState<Group | null>(null);
+function AddTransactionForm({ user, group }: AddTransactionFormProps) {
+  // const { groupId } = useParams();
+
+  // const [group, setGroup] = useState<Group | null>(null);
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
+    console.log(group);
     const fetchData = async () => {
       try {
-        const groupRes = await axios.get(
-          `http://127.0.0.1:5000/api/groups/${groupId}`
-        );
+        // // const groupRes = await axios.get(
+        //   `http://127.0.0.1:5000/api/groups/${groupId}`
+        // );
         const usersRes = await axios.get(
-          `http://127.0.0.1:5000/api/groups/${groupId}/users`
+          `http://127.0.0.1:5000/api/groups/${group.id}/users`
         );
-        setGroup(groupRes.data);
+        // setGroup(groupRes.data);
         setUsers(usersRes.data);
       } catch {
-        alert("Error fetching group");
+        alert("Error fetching users");
       }
     };
     fetchData();
-  }, [groupId]);
+  }, [group]);
 
   const [formData, setFormData] = useState<FormData>({
     amount: "",
     description: "",
     user_ids: [],
   });
-
-  const navigate = useNavigate();
 
   const { amount, description, user_ids } = formData;
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -91,17 +95,15 @@ function AddTransactionForm(user: User) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://localhost:5000/api/transactions/`, {
+      await axios.post(`http://localhost:5000/api/transactions/`, {
         amount: parseInt(amount),
         description: description,
         user_owed_id: user.id,
         user_owing_ids: user_ids,
-        group_id: groupId,
+        group_id: group.id,
       });
 
-      if (res.status === 201) {
-        navigate(`/groups/${groupId}`, { replace: true });
-      }
+      window.location.reload();
     } catch (err) {
       alert("Error adding a transaction");
     }
@@ -109,47 +111,45 @@ function AddTransactionForm(user: User) {
 
   return (
     <div className="flex flex-grow justify-center items-center">
-      <FormTemplate>
-        <form onSubmit={handleSubmit}>
-          <h1 className="text-2xl font-extrabold text-center mb-6">
-            Add Transaction
-          </h1>
-          <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
-          <div className="my-5">
-            <input
-              type="text"
-              name="amount"
-              placeholder="Amount"
-              value={formData.amount.toString()}
-              onChange={handleChange}
-              className="px-3 py-2.5 border rounded-lg w-full text-sm"
-            />
-            <span className="text-xs text-red-700">{errors.amount}</span>
-          </div>
-          <div className="my-5">
-            <h3 className="text-xl font-semibold mb-3">Select Users</h3>
-            {users
-              .filter((u) => u.id !== user.id && u.id !== undefined)
-              .map((u) => (
-                <div key={u.id} className="mb-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value={u.id || ""}
-                      checked={formData.user_ids.includes(u.id || 0)}
-                      onChange={handleCheckboxChange}
-                      className="mr-2"
-                    />
-                    {u.username}
-                  </label>
-                </div>
-              ))}
-          </div>
-          <Button type="submit" className="w-full" disabled={!amount}>
-            Add
-          </Button>
-        </form>
-      </FormTemplate>
+      <form onSubmit={handleSubmit} className="w-full">
+        <h1 className="text-2xl font-extrabold text-center mb-6">
+          Add Transaction
+        </h1>
+        <h2 className="text-2xl text-center mb-10">{group?.name}</h2>
+        <div className="my-5">
+          <input
+            type="text"
+            name="amount"
+            placeholder="Amount"
+            value={formData.amount.toString()}
+            onChange={handleChange}
+            className="px-3 py-2.5 border rounded-lg w-full text-sm"
+          />
+          <span className="text-xs text-red-700">{errors.amount}</span>
+        </div>
+        <div className="my-5">
+          <h3 className="text-xl font-semibold mb-3">Select Users</h3>
+          {users
+            .filter((u) => u.id !== user.id && u.id !== undefined)
+            .map((u) => (
+              <div key={u.id} className="mb-2">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    value={u.id || ""}
+                    checked={formData.user_ids.includes(u.id || 0)}
+                    onChange={handleCheckboxChange}
+                    className="mr-2"
+                  />
+                  {u.username}
+                </label>
+              </div>
+            ))}
+        </div>
+        <Button type="submit" className="w-full" disabled={!amount}>
+          Add
+        </Button>
+      </form>
     </div>
   );
 }

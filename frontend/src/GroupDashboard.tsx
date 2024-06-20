@@ -9,12 +9,18 @@ import Modal from "./components/Modal";
 import CardTemplate from "./components/CardTemplate";
 import Button from "./components/Button";
 import SettleTransactionForm from "./forms/SettleTransactionForm";
+import AddUserForm from "./forms/AddUserForm";
+import AddTransactionForm from "./forms/AddTransactionForm";
 
 function GroupDashboard(user: User) {
   const { groupId } = useParams();
   const [group, setGroup] = useState<Group | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState<boolean>(false);
+  const [isAddTransactionModalOpen, setIsAddTransactionModalOpen] =
+    useState<boolean>(false);
 
   const [isAllTransactionsModalOpen, setIsAllTransactionsModalOpen] =
     useState<boolean>(false);
@@ -96,18 +102,45 @@ function GroupDashboard(user: User) {
                 <h1 className="text-5xl font-bold my-4 h-full">{group.name}</h1>
               </div>
               <div className="flex flex-col my-6">
-                <Link
+                {/* <Link
                   to={`/groups/${groupId}/add/user`}
                   className="hover:opacity-50"
                 >
                   <h1 className="text-xl font-bold my-4">Add User</h1>
-                </Link>
-                <Link
+                </Link> */}
+                <button
+                  className="hover:opacity-50"
+                  onClick={() => setIsAddUserModalOpen(true)}
+                >
+                  <h1 className="text-xl font-bold my-4">Add user</h1>
+                </button>
+                <Modal
+                  onClose={() => setIsAddUserModalOpen(false)}
+                  open={isAddUserModalOpen}
+                >
+                  <AddUserForm {...group}></AddUserForm>
+                </Modal>
+                {/* <Link
                   to={`/groups/${groupId}/add/transaction`}
                   className="hover:opacity-50"
                 >
                   <h1 className="text-xl font-bold my-4">Add Transaction</h1>
-                </Link>
+                </Link> */}
+                <button
+                  className="hover:opacity-50"
+                  onClick={() => setIsAddTransactionModalOpen(true)}
+                >
+                  <h1 className="text-xl font-bold my-4">Add transaction</h1>
+                </button>
+                <Modal
+                  onClose={() => setIsAddTransactionModalOpen(false)}
+                  open={isAddTransactionModalOpen}
+                >
+                  <AddTransactionForm
+                    user={user}
+                    group={group}
+                  ></AddTransactionForm>
+                </Modal>
                 <div>
                   <button
                     onClick={() => setIsAllTransactionsModalOpen(true)}
@@ -123,7 +156,7 @@ function GroupDashboard(user: User) {
                   >
                     <h1 className="text-3xl font-bold mb-10">Transactions:</h1>
                     {transactions.length === 0 ? (
-                      <h1>You have no transactions</h1>
+                      <h1>No transactions</h1>
                     ) : (
                       transactions.map((t: Transaction) => {
                         return (
@@ -234,7 +267,7 @@ function GroupDashboard(user: User) {
                             className="mr-4"
                           ></UserIcon>
                           <h1 className="text-xl font-bold">{user.username}</h1>
-                          {user && user.balance ? (
+                          {user && user.balance !== undefined ? (
                             user.balance === 0 ? (
                               <p className="ml-2 text-xl">is even</p>
                             ) : user.balance > 0 ? (
@@ -247,7 +280,7 @@ function GroupDashboard(user: User) {
                               </p>
                             )
                           ) : (
-                            ""
+                            "is unknown"
                           )}
                         </span>
                       );
