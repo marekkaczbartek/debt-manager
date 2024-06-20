@@ -72,6 +72,16 @@ def delete_group(group_id: int):
 
 
 @jwt_required()
+def delete_user_from_group(group_id: int, user_id: int):
+    group = group_service.delete_user_from_group(user_id, group_id)
+
+    if not group:
+        return jsonify({"error": "Group or user not found"}), 404
+
+    return jsonify({"message": "User removed from group"}), 204
+
+
+@jwt_required()
 def get_group_balance_list(group_id: int):
     return jsonify(group_service.get_group_balance_list(group_id)), 200
 

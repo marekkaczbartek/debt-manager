@@ -1,16 +1,19 @@
 import axios from "axios";
-import { User } from "../../interfaces/User";
-import Group from "../../interfaces/Group";
+import { User } from "../interfaces/User";
+import Group from "../interfaces/Group";
 import { useEffect, useState } from "react";
-import GroupCard from "../components/GroupCard";
-import PlaceholderGroupCard from "../components/PlaceholderGroupCard";
-import Button from "../components/Button";
+import GroupCard from "./components/GroupCard";
+import PlaceholderGroupCard from "./components/PlaceholderGroupCard";
+import Button from "./components/Button";
+import { Link } from "react-router-dom";
 
-function Home(user: User) {
+function HomeDashboard(user: User) {
   const [groups, setGroups] = useState<Group[]>([]);
   const onClickDelete = async (group: Group) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/groups/${group.id}`);
+      await axios.delete(
+        `http://127.0.0.1:5000/api/groups/${group.id}/users/${user.id}`
+      );
       setGroups(groups.filter((g) => g.id !== group.id));
     } catch (err) {
       throw new Error("Error deleting group");
@@ -54,7 +57,9 @@ function Home(user: User) {
                 : `You owe ${Math.abs(user.balance)}$`}
             </h2>
             <div className="text-center">
-              <Button>Add Group</Button>
+              <Link to="/groups/new">
+                <Button disabled={groups.length === 3}>Add Group</Button>
+              </Link>
             </div>
             <div className="flex flex-row justify-evenly">
               {groups.slice(0, 3).map((group: Group) => {
@@ -86,4 +91,4 @@ function Home(user: User) {
   );
 }
 
-export default Home;
+export default HomeDashboard;

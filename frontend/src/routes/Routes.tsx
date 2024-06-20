@@ -1,12 +1,8 @@
-import {
-  RouterProvider,
-  createBrowserRouter,
-  useLocation,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { UnprotectedRoute } from "./UnprotectedRoute";
-import Home from "../home/Home";
+import HomeDashboard from "../HomeDashboard";
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import GroupForm from "../forms/GroupForm";
@@ -38,7 +34,6 @@ const Routes = () => {
           password,
           balance: balance.data.balance,
         });
-        console.log(user);
       } catch (err) {
         throw new Error("Error fetching current user");
       }
@@ -54,7 +49,7 @@ const Routes = () => {
       children: [
         {
           path: "/home",
-          element: <Home {...user} />,
+          element: <HomeDashboard {...user} />,
         },
         {
           path: "/groups/new",

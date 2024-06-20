@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import CardTemplate from "./CardTemplate";
+import { EllipsisHorizontalCircleIcon } from "@heroicons/react/16/solid";
 
 interface GroupCardProps {
   id: number;
@@ -13,12 +14,9 @@ const GroupCard = (group: GroupCardProps) => {
   const firstLetter = group.groupName.charAt(0).toUpperCase();
   return (
     <CardTemplate>
-      <Link
-        to={`/groups/${group.id}`}
-        className="mb-6 w-32 h-32 rounded-full flex items-center justify-center text-black text-7xl border-2 border-black"
-      >
+      <div className="mb-6 w-32 h-32 rounded-full flex items-center justify-center text-black text-7xl border-2 border-black">
         {firstLetter}
-      </Link>
+      </div>
 
       <h5 className="text-2xl font-bold">{group.groupName}</h5>
       <span key={group.id} className="my-4 text-center">
@@ -30,9 +28,14 @@ const GroupCard = (group: GroupCardProps) => {
           <p className="text-xl">You owe {Math.abs(group.groupBalance)}$</p>
         )}
       </span>
-      <Button onClick={group.onClickDelete} className="w-1/2 my-3">
-        Delete
-      </Button>
+      <div className="flex">
+        <Link to={`/groups/${group.id}`}>
+          <Button className="my-3 mx-1">More</Button>
+        </Link>
+        <Button onClick={group.onClickDelete} className="my-3 mx-1 bg-red-500">
+          Leave
+        </Button>
+      </div>
     </CardTemplate>
   );
 };

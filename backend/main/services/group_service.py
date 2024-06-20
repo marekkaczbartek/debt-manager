@@ -45,6 +45,15 @@ def delete_group(group_id: int):
     return group
 
 
+def delete_user_from_group(user_id: int, group_id: int):
+    group = get_group_by_id(group_id)
+    user = user_service.get_user_by_id(user_id)
+    if group and user:
+        group.users.remove(user)
+        db.session.commit()
+    return group
+
+
 def get_group_balance_list(group_id: int) -> List[dict]:
     group = get_group_by_id(group_id)
     return [
