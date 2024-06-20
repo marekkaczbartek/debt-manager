@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import FormTemplate from "../components/FormTemplate";

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import CardTemplate from "./CardTemplate";
-import { EllipsisHorizontalCircleIcon } from "@heroicons/react/16/solid";
 
 interface GroupCardProps {
   id: number;

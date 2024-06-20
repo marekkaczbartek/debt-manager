@@ -45,7 +45,7 @@ function HomeDashboard(user: User) {
   return (
     <div className="flex flex-grow justify-center items-center">
       <div className="flex-grow">
-        {!user.username ? (
+        {!user.username || !user.balance ? (
           <h1 className="text-center">Loading...</h1>
         ) : (
           <>

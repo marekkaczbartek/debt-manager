@@ -2,7 +2,6 @@ import React from "react";
 import UserIcon from "./UserIcon";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import Modal from "./Modal";
 import DropdownModal from "./DropdownModal";
 
 export interface NavbarProps {
@@ -45,7 +44,7 @@ const AuthNavbar: React.FC<NavbarProps> = ({ username }) => {
         onClose={() => setIsDropdown(false)}
         open={isDropdown}
         className=""
-        user={{ username: username }}
+        username={username}
       >
         {/* Dropdown menu */}
         <ul className="text-center font-bold">

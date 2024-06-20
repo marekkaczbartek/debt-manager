@@ -9,7 +9,6 @@ import Modal from "./components/Modal";
 import CardTemplate from "./components/CardTemplate";
 import Button from "./components/Button";
 import SettleTransactionForm from "./forms/SettleTransactionForm";
-import { TrashIcon } from "@heroicons/react/16/solid";
 
 function GroupDashboard(user: User) {
   const { groupId } = useParams();
@@ -88,23 +87,12 @@ function GroupDashboard(user: User) {
                   to={`/groups/${groupId}/add/user`}
                   className="hover:opacity-50"
                 >
-                  {/* <span key={user.id} className="flex items-center my-3">
-                    <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center align-middle text-black text-3xl border-black">
-                      +
-                    </div>
-                  </span> */}
                   <h1 className="text-xl font-bold my-4">Add User</h1>
                 </Link>
                 <Link
                   to={`/groups/${groupId}/add/transaction`}
                   className="hover:opacity-50"
                 >
-                  {/* <span key={user.id} className="flex items-center my-3">
-                    <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center text-black text-3xl border-black leading-none">
-                      +
-                    </div>
-                    <h1 className="text-xl font-bold">Add Transaction</h1>
-                  </span> */}
                   <h1 className="text-xl font-bold my-4">Add Transaction</h1>
                 </Link>
                 <div>
@@ -113,7 +101,6 @@ function GroupDashboard(user: User) {
                     className="hover:opacity-50"
                   >
                     <span key={user.id} className="flex items-center my-6">
-                      {/* <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center text-black text-3xl border-black leading-none"></div> */}
                       <h1 className="text-xl font-bold">All transactions</h1>
                     </span>
                   </button>
@@ -149,7 +136,6 @@ function GroupDashboard(user: User) {
                     className="hover:opacity-50"
                   >
                     <span key={user.id} className="flex items-center my-4">
-                      {/* <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center text-black text-3xl border-2 border-black leading-none"></div> */}
                       <h1 className="text-xl font-bold">Your transactions</h1>
                     </span>
                   </button>
@@ -234,7 +220,6 @@ function GroupDashboard(user: User) {
                     className="hover:opacity-50"
                   >
                     <span key={user.id} className="flex items-center my-4">
-                      {/* <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center text-black text-3xl border-2 border-black leading-none"></div> */}
                       <h1 className="text-xl font-bold">Balances</h1>
                     </span>
                   </button>
@@ -251,16 +236,20 @@ function GroupDashboard(user: User) {
                             className="mr-4"
                           ></UserIcon>
                           <h1 className="text-xl font-bold">{user.username}</h1>
-                          {user.balance === 0 ? (
-                            <p className="ml-2 text-xl">is even</p>
-                          ) : user.balance > 0 ? (
-                            <p className="ml-2 text-xl">
-                              is owed {user.balance}$
-                            </p>
+                          {user && user.balance ? (
+                            user.balance === 0 ? (
+                              <p className="ml-2 text-xl">is even</p>
+                            ) : user.balance > 0 ? (
+                              <p className="ml-2 text-xl">
+                                is owed {user.balance}$
+                              </p>
+                            ) : (
+                              <p className="ml-2 text-xl">
+                                owes {Math.abs(user.balance)}$
+                              </p>
+                            )
                           ) : (
-                            <p className="ml-2 text-xl">
-                              owes {Math.abs(user.balance)}$
-                            </p>
+                            ""
                           )}
                         </span>
                       );

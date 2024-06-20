@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import FormTemplate from "../components/FormTemplate";
@@ -7,7 +7,7 @@ import Group from "../../interfaces/Group";
 import { User } from "../../interfaces/User";
 
 interface FormData {
-  amount: number;
+  amount: string;
   description: string;
   user_ids: number[];
 }
@@ -37,7 +37,7 @@ function AddTransactionForm(user: User) {
   }, [groupId]);
 
   const [formData, setFormData] = useState<FormData>({
-    amount: 0,
+    amount: "",
     description: "",
     user_ids: [],
   });
@@ -129,14 +129,14 @@ function AddTransactionForm(user: User) {
           <div className="my-5">
             <h3 className="text-xl font-semibold mb-3">Select Users</h3>
             {users
-              .filter((u) => u.id !== user.id)
+              .filter((u) => u.id !== user.id && u.id !== undefined)
               .map((u) => (
                 <div key={u.id} className="mb-2">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
-                      value={u.id}
-                      checked={formData.user_ids.includes(u.id)}
+                      value={u.id || ""}
+                      checked={formData.user_ids.includes(u.id || 0)}
                       onChange={handleCheckboxChange}
                       className="mr-2"
                     />

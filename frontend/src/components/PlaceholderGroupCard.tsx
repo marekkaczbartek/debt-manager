@@ -12,7 +12,7 @@ const PlaceholderGroupCard = () => {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-10"
+            className="size-10"
           >
             <path
               stroke-linecap="round"
