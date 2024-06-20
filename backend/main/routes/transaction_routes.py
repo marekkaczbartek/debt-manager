@@ -10,6 +10,18 @@ transaction_blueprint.route("/", methods=["GET"])(
     transaction_controller.get_transactions
 )
 
+transaction_blueprint.route("/<int:transaction_id>", methods=["GET"])(
+    transaction_controller.get_transaction_by_id
+)
+
+transaction_blueprint.route("/<int:transaction_id>/settle", methods=["PUT"])(
+    transaction_controller.settle_transaction_by_id
+)
+
+transaction_blueprint.route("/<int:transaction_id>", methods=["DELETE"])(
+    transaction_controller.delete_transaction_by_id
+)
+
 transaction_blueprint.route("/", methods=["DELETE"])(
     transaction_controller.delete_transactions
 )

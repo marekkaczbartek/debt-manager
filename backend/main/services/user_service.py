@@ -26,7 +26,7 @@ def delete_user(user_id: int) -> User:
     if user:
         db.session.delete(user)
         db.session.commit()
-        return user
+    return user
 
 
 def get_groups_from_user(user_id: int):

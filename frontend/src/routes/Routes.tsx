@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  useLocation,
+} from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { UnprotectedRoute } from "./UnprotectedRoute";
@@ -21,6 +25,7 @@ const Routes = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get("http://127.0.0.1:5000/api/users/current");
+        console.log(res.data);
         const { id, username, email, password } = res.data;
         const balance = await axios.get(
           `http://127.0.0.1:5000/api/users/${id}/balance`
@@ -33,11 +38,12 @@ const Routes = () => {
           password,
           balance: balance.data.balance,
         });
+        console.log(user);
       } catch (err) {
         throw new Error("Error fetching current user");
       }
     };
-    fetchUser();
+    if (accessToken) fetchUser();
   }, [accessToken]);
 
   // Define routes accessible only to authenticated users

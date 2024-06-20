@@ -11,14 +11,34 @@ def add_transaction(amount, group_id, user_owed_id, user_owing_id) -> None:
     db.session.commit()
 
 
-def get_transactions() -> List[dict]:
+def get_transactions() -> List[Transaction]:
     transactions = Transaction.query.all()
-    return [transaction.to_json() for transaction in transactions]
+    return [transaction for transaction in transactions]
+
+
+def get_transaction_by_id(transaction_id: int) -> Transaction:
+    transaction = Transaction.query.get(transaction_id)
+    return transaction
+
+
+def settle_transaction_by_id(transaction_id: int, amount: float) -> Transaction:
+    transaction = get_transaction_by_id(transaction_id)
+    transaction.amount = max(transaction.amount - amount, 0)
+    db.session.commit()
+    return transaction
 
 
 def delete_transactions() -> None:
     Transaction.query.delete()
     db.session.commit()
+
+
+def delete_transaction_by_id(transaction_id: int):
+    transaction = get_transaction_by_id(transaction_id)
+    if transaction:
+        db.session.delete(transaction)
+        db.session.commit()
+    return transaction
 
 
 def divide_transaction(amount, user_owing_ids) -> List[tuple[float, int]]:
@@ -56,4 +76,4 @@ def simplify_transactions(group_id: int) -> List[Transaction]:
         db.session.add(transaction)
 
     db.session.commit()
-    return [t.to_json() for t in simplified_transactions]
+    return [t for t in simplified_transactions]

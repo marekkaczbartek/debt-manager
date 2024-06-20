@@ -8,8 +8,8 @@ import UserIcon from "./components/UserIcon";
 import Modal from "./components/Modal";
 import CardTemplate from "./components/CardTemplate";
 import Button from "./components/Button";
-import { ListBulletIcon } from "@heroicons/react/16/solid";
-import { ListItem } from "@material-tailwind/react";
+import SettleTransactionForm from "./forms/SettleTransactionForm";
+import { TrashIcon } from "@heroicons/react/16/solid";
 
 function GroupDashboard(user: User) {
   const { groupId } = useParams();
@@ -22,6 +22,9 @@ function GroupDashboard(user: User) {
   const [isUserTransactionsModalOpen, setIsUserTransactionsModalOpen] =
     useState<boolean>(false);
   const [isBalanceModalOpen, setBalanceModalOpen] = useState<boolean>(false);
+  const [isSettleModalOpen, setIsSettleModalOpen] = useState<boolean>(false);
+  const [currentTransaction, setCurrentTransaction] =
+    useState<Transaction | null>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +65,12 @@ function GroupDashboard(user: User) {
     };
     fetchData();
   }, [groupId]);
+
+  const handleDelete = async (id: number) => {
+    // Add your delete logic here
+    await axios.delete(`http://localhost:5000/api/transactions/${id}`);
+    setTransactions(transactions.filter((t) => t.id !== id));
+  };
 
   return (
     <div className="flex flex-grow justify-center text-center">
@@ -160,7 +169,7 @@ function GroupDashboard(user: User) {
                         )
                         .map((t: Transaction) => {
                           return (
-                            <li className="flex items-center">
+                            <li key={t.id} className="flex items-center">
                               <p className="text-xl my-4 mr-6">
                                 {t.user_owing_id === user.id
                                   ? "You owe "
@@ -175,11 +184,48 @@ function GroupDashboard(user: User) {
                                       ?.username}{" "}
                                 {t.amount}$
                               </p>
-                              <Button className="px-4">Settle</Button>
+                              <Button
+                                className="px-4"
+                                onClick={() => {
+                                  setCurrentTransaction(t);
+                                  console.log(currentTransaction);
+                                  setIsUserTransactionsModalOpen(false);
+                                  setIsSettleModalOpen(true);
+                                }}
+                                disabled={t.amount === 0}
+                              >
+                                {t.amount === 0 ? "Settled" : "Settle"}
+                              </Button>
+                              {t.amount === 0 ? (
+                                <Button
+                                  className="ml-2 px-4"
+                                  onClick={() => handleDelete(t.id)}
+                                >
+                                  Delete
+                                </Button>
+                              ) : (
+                                ""
+                              )}
                             </li>
                           );
                         })}
                     </ul>
+                  </Modal>
+                  <Modal
+                    onClose={() => {
+                      setIsSettleModalOpen(false);
+                      setIsUserTransactionsModalOpen(true);
+                    }}
+                    open={isSettleModalOpen}
+                    className="w-0.5"
+                  >
+                    <h1 className="text-3xl font-bold mb-10">Settle</h1>
+                    <SettleTransactionForm
+                      onClose={() => {
+                        setIsSettleModalOpen(false);
+                      }}
+                      transactionId={currentTransaction?.id}
+                    />
                   </Modal>
                 </div>
                 <div>

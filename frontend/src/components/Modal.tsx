@@ -18,7 +18,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50" />
       <div className="fixed inset-0 flex items-center justify-center z-50">
         <div
-          className={`bg-white p-6 rounded-lg shadow-lg max-w-md w-full min-h-36 relative flex flex-col ${className}`}
+          className={`bg-white py-6 px-10 rounded-lg shadow-lg max-w-md w-full min-h-36 relative flex flex-col ${className}`}
         >
           <button
             onClick={onClose}
