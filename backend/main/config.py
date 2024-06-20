@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -11,7 +12,7 @@ CORS(
     resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
 )
 
-app.config["SECRET_KEY"] = "bf6c049388a44a60b56e648d36d0faca"
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
