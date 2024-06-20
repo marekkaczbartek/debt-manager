@@ -2,7 +2,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { UnprotectedRoute } from "./UnprotectedRoute";
-import HomeDashboard from "../HomeDashboard";
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 import GroupForm from "../forms/GroupForm";
@@ -10,8 +9,10 @@ import { User } from "../../interfaces/User";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import GroupDashboard from "../GroupDashboard";
+import Dashboard from "../Dashboard";
 import AddUserForm from "../forms/AddUserForm";
 import AddTransactionForm from "../forms/AddTransactionForm";
+import Home from "../Home";
 
 const Routes = () => {
   const { accessToken } = useAuth();
@@ -46,8 +47,12 @@ const Routes = () => {
       element: <ProtectedRoute {...user} />,
       children: [
         {
-          path: "/home",
-          element: <HomeDashboard {...user} />,
+          path: "/",
+          element: <Home {...user} />,
+        },
+        {
+          path: "/groups",
+          element: <Dashboard {...user} />,
         },
         {
           path: "/groups/new",

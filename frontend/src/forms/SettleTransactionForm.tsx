@@ -3,17 +3,15 @@ import Button from "../components/Button";
 import axios from "axios";
 
 interface SettleTransactionFormProps {
-  onClose: () => void;
   transactionId?: number;
 }
 
 export default function SettleTransactionForm({
-  onClose,
   transactionId,
 }: SettleTransactionFormProps) {
   const [amount, setAmount] = useState("");
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [fullAmount, setFullAmount] = useState(0); // Example transaction amount, replace with your actual amount
+  const [fullAmount, setFullAmount] = useState(0);
 
   useEffect(() => {
     const fetchTransactionAmount = async () => {
@@ -53,7 +51,7 @@ export default function SettleTransactionForm({
           amount: parseFloat(amount),
         }
       );
-      onClose();
+      window.location.reload();
     } catch {
       throw new Error("Error fetching updated transactions");
     }

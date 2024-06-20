@@ -7,11 +7,11 @@ group_user = db.Table(
     db.Column("group_id", db.Integer, db.ForeignKey("group.id")),
 )
 
-debt_user = db.Table(
-    "debt_user",
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-    db.Column("debt_id", db.Integer, db.ForeignKey("debt.id")),
-)
+# debt_user = db.Table(
+#     "debt_user",
+#     db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
+#     db.Column("debt_id", db.Integer, db.ForeignKey("debt.id")),
+# )
 
 
 class User(db.Model):
@@ -23,11 +23,13 @@ class User(db.Model):
         "Transaction",
         foreign_keys="Transaction.user_owing_id",
         back_populates="user_owing",
+        cascade="all,delete",
     )
     owed = db.relationship(
         "Transaction",
         foreign_keys="Transaction.user_owed_id",
         back_populates="user_owed",
+        cascade="all,delete",
     )
 
     def __init__(self, username, password, email):
@@ -47,7 +49,6 @@ class User(db.Model):
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
-    settled = db.Column(db.Boolean, default=False)
     group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
     user_owed_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     user_owing_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -56,7 +57,9 @@ class Transaction(db.Model):
         "User", foreign_keys=[user_owed_id], back_populates="owed"
     )
     user_owing = db.relationship(
-        "User", foreign_keys=[user_owing_id], back_populates="owing"
+        "User",
+        foreign_keys=[user_owing_id],
+        back_populates="owing",
     )
 
     def __init__(self, amount, group_id, user_owed_id, user_owing_id):
@@ -72,42 +75,41 @@ class Transaction(db.Model):
             "group_id": self.group_id,
             "user_owed_id": self.user_owed_id,
             "user_owing_id": self.user_owing_id,
-            "settled": self.settled,
         }
 
 
-class Debt(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float, nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    settled = db.Column(db.Boolean, default=False)
-    date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
-    user_owed_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+# class Debt(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     amount = db.Column(db.Float, nullable=False)
+#     description = db.Column(db.String(255), nullable=False)
+#     settled = db.Column(db.Boolean, default=False)
+#     date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+#     group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
+#     user_owed_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-    user_owed = db.relationship(
-        "User", foreign_keys=[user_owed_id], backref="debts_owed", lazy=True
-    )
-    users_owing = db.relationship(
-        "User", secondary=debt_user, backref="debts_owing", lazy=True
-    )
+#     user_owed = db.relationship(
+#         "User", foreign_keys=[user_owed_id], backref="debts_owed", lazy=True
+#     )
+#     users_owing = db.relationship(
+#         "User", secondary=debt_user, backref="debts_owing", lazy=True
+#     )
 
-    def __init__(self, amount, description, group_id, user_id):
-        self.amount = amount
-        self.description = description
-        self.group_id = group_id
-        self.user_id = user_id
+#     def __init__(self, amount, description, group_id, user_id):
+#         self.amount = amount
+#         self.description = description
+#         self.group_id = group_id
+#         self.user_id = user_id
 
-    def to_json(self):
-        return {
-            "id": self.id,
-            "amount": self.amount,
-            "description": self.description,
-            "settled": self.settled,
-            "date": self.date,
-            "group_id": self.group_id,
-            "user_id": self.user_id,
-        }
+#     def to_json(self):
+#         return {
+#             "id": self.id,
+#             "amount": self.amount,
+#             "description": self.description,
+#             "settled": self.settled,
+#             "date": self.date,
+#             "group_id": self.group_id,
+#             "user_id": self.user_id,
+#         }
 
 
 class Group(db.Model):
@@ -116,7 +118,7 @@ class Group(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     owner = db.relationship("User", backref="group_owner", lazy=True)
     users = db.relationship("User", secondary=group_user, backref="groups")
-    debts = db.relationship("Debt", backref="group", lazy=True)
+    # debts = db.relationship("Debt", backref="group", lazy=True)
     transactions = db.relationship(
         "Transaction", backref="group", lazy=True, cascade="all,delete"
     )

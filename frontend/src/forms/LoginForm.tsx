@@ -66,7 +66,7 @@ function LoginForm() {
         setAccessToken(accessToken);
 
         // // alert("User logged in");
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
       }
     } catch (err) {
       alert("Wrong email or password");

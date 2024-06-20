@@ -31,6 +31,7 @@ def add_user_to_group(user_id: int, group_id: int):
 
     group.users.append(user)
     db.session.commit()
+    return group
 
 
 def get_users_from_group(group_id: int) -> List[User]:
@@ -66,4 +67,4 @@ def get_group_balance_list(group_id: int) -> List[dict]:
 
 
 def get_group_transactions(group_id: int) -> List[Transaction]:
-    return Transaction.query.filter_by(group_id=group_id, settled=False).all()
+    return Transaction.query.filter_by(group_id=group_id).all()

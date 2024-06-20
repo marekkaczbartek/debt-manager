@@ -5,10 +5,13 @@ from models import Transaction
 from services import group_service
 
 
-def add_transaction(amount, group_id, user_owed_id, user_owing_id) -> None:
+def add_transaction(
+    amount: float, group_id: int, user_owed_id: int, user_owing_id: int
+):
     transaction = Transaction(amount, group_id, user_owed_id, user_owing_id)
     db.session.add(transaction)
     db.session.commit()
+    return transaction
 
 
 def get_transactions() -> List[Transaction]:
@@ -21,14 +24,14 @@ def get_transaction_by_id(transaction_id: int) -> Transaction:
     return transaction
 
 
-def settle_transaction_by_id(transaction_id: int, amount: float) -> Transaction:
+def settle_transaction_by_id(transaction_id: int, amount: float):
     transaction = get_transaction_by_id(transaction_id)
     transaction.amount = max(transaction.amount - amount, 0)
     db.session.commit()
     return transaction
 
 
-def delete_transactions() -> None:
+def delete_transactions():
     Transaction.query.delete()
     db.session.commit()
 
@@ -41,7 +44,9 @@ def delete_transaction_by_id(transaction_id: int):
     return transaction
 
 
-def divide_transaction(amount, user_owing_ids) -> List[tuple[float, int]]:
+def divide_transaction(
+    amount: float, user_owing_ids: List[int]
+) -> List[tuple[float, int]]:
     sub_amount = round(amount / len(user_owing_ids), 2)
     return [(sub_amount, user_owing_id) for user_owing_id in user_owing_ids]
 

@@ -66,9 +66,22 @@ function GroupDashboard(user: User) {
   }, [groupId]);
 
   const handleDelete = async (id: number) => {
-    // Add your delete logic here
     await axios.delete(`http://localhost:5000/api/transactions/${id}`);
     setTransactions(transactions.filter((t) => t.id !== id));
+  };
+
+  const TransactionElem = ({ t }: { t: Transaction }) => {
+    return (
+      <p className="text-xl my-4 mr-4">
+        {t.user_owing_id === user.id
+          ? "You owe "
+          : `${users.find((u) => u.id === t.user_owing_id)?.username} owes `}
+        {t.user_owed_id === user.id
+          ? "You"
+          : users.find((u) => u.id === t.user_owed_id)?.username}{" "}
+        {t.amount}$
+      </p>
+    );
   };
 
   return (
@@ -109,25 +122,17 @@ function GroupDashboard(user: User) {
                     open={isAllTransactionsModalOpen}
                   >
                     <h1 className="text-3xl font-bold mb-10">Transactions:</h1>
-                    {transactions.map((t) => {
-                      return (
-                        <div className="flex items-center">
-                          <p className="text-xl my-4 mr-4">
-                            {t.user_owing_id === user.id
-                              ? "You owe "
-                              : `${
-                                  users.find((u) => u.id === t.user_owing_id)
-                                    ?.username
-                                } owes `}
-                            {t.user_owed_id === user.id
-                              ? "You"
-                              : users.find((u) => u.id === t.user_owed_id)
-                                  ?.username}{" "}
-                            {t.amount}$
-                          </p>
-                        </div>
-                      );
-                    })}
+                    {transactions.length === 0 ? (
+                      <h1>You have no transactions</h1>
+                    ) : (
+                      transactions.map((t: Transaction) => {
+                        return (
+                          <div key={t.id} className="flex items-center">
+                            <TransactionElem t={t} />
+                          </div>
+                        );
+                      })
+                    )}
                   </Modal>
                 </div>
                 <div>
@@ -146,77 +151,70 @@ function GroupDashboard(user: User) {
                     <h1 className="text-3xl font-bold mb-10">
                       Your Transactions:
                     </h1>
-                    <ul className="list-disc">
-                      {transactions
-                        .filter(
-                          (t: Transaction) =>
-                            t.user_owed_id === user.id ||
-                            t.user_owing_id === user.id
-                        )
-                        .map((t: Transaction) => {
-                          return (
-                            <li key={t.id} className="flex items-center">
-                              <p className="text-xl my-4 mr-6">
-                                {t.user_owing_id === user.id
-                                  ? "You owe "
-                                  : `${
-                                      users.find(
-                                        (u) => u.id === t.user_owing_id
-                                      )?.username
-                                    } owes `}
-                                {t.user_owed_id === user.id
-                                  ? "You"
-                                  : users.find((u) => u.id === t.user_owed_id)
-                                      ?.username}{" "}
-                                {t.amount}$
-                              </p>
-                              <Button
-                                className="px-4"
-                                onClick={() => {
-                                  setCurrentTransaction(t);
-                                  console.log(currentTransaction);
-                                  setIsUserTransactionsModalOpen(false);
-                                  setIsSettleModalOpen(true);
-                                }}
-                                disabled={t.amount === 0}
-                              >
-                                {t.amount === 0 ? "Settled" : "Settle"}
-                              </Button>
-                              {t.amount === 0 ? (
-                                <Button
-                                  className="ml-2 px-4"
-                                  onClick={() => handleDelete(t.id)}
-                                >
-                                  Delete
-                                </Button>
-                              ) : (
-                                ""
-                              )}
-                            </li>
-                          );
-                        })}
+                    <ul>
+                      {transactions.length === 0 ? (
+                        <h1>You have no transactions</h1>
+                      ) : (
+                        transactions
+                          .filter(
+                            (t: Transaction) =>
+                              t.user_owed_id === user.id ||
+                              t.user_owing_id === user.id
+                          )
+                          .map((t: Transaction) => {
+                            return (
+                              <li key={t.id} className="flex items-center">
+                                <TransactionElem t={t} />
+                                {t.user_owing_id !== user.id ? (
+                                  ""
+                                ) : (
+                                  <Button
+                                    className="px-4"
+                                    onClick={() => {
+                                      setCurrentTransaction(t);
+                                      console.log(currentTransaction);
+                                      setIsUserTransactionsModalOpen(false);
+                                      setIsSettleModalOpen(true);
+                                    }}
+                                    disabled={t.amount === 0}
+                                  >
+                                    {t.amount === 0 ? "Settled" : "Settle"}
+                                  </Button>
+                                )}
+                                {t.amount === 0 ? (
+                                  <Button
+                                    className="ml-2 px-4"
+                                    onClick={() => handleDelete(t.id)}
+                                  >
+                                    Delete
+                                  </Button>
+                                ) : (
+                                  ""
+                                )}
+                              </li>
+                            );
+                          })
+                      )}
                     </ul>
                   </Modal>
                   <Modal
                     onClose={() => {
                       setIsSettleModalOpen(false);
-                      setIsUserTransactionsModalOpen(true);
                     }}
                     open={isSettleModalOpen}
                     className="w-0.5"
                   >
                     <h1 className="text-3xl font-bold mb-10">Settle</h1>
                     <SettleTransactionForm
-                      onClose={() => {
-                        setIsSettleModalOpen(false);
-                      }}
                       transactionId={currentTransaction?.id}
                     />
                   </Modal>
                 </div>
                 <div>
                   <button
-                    onClick={() => setBalanceModalOpen(true)}
+                    onClick={() => {
+                      setBalanceModalOpen(true);
+                    }}
                     className="hover:opacity-50"
                   >
                     <span key={user.id} className="flex items-center my-4">

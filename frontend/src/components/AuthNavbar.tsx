@@ -50,7 +50,12 @@ const AuthNavbar: React.FC<NavbarProps> = ({ username }) => {
         <ul className="text-center font-bold">
           <li className="py-2 px-4 hover:opacity-50 cursor-pointer">
             <button onClick={() => setIsDropdown(false)}>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
+            </button>
+          </li>
+          <li className="py-2 px-4 hover:opacity-50 cursor-pointer">
+            <button onClick={() => setIsDropdown(false)}>
+              <Link to="/groups">Groups</Link>
             </button>
           </li>
           <li className="py-2 px-4 text-red-500 hover:opacity-50 cursor-pointer">

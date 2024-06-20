@@ -60,7 +60,7 @@ function GroupForm(user: User) {
       );
 
       if (groupCreationRes.status === 201) {
-        navigate("/home", { replace: true });
+        navigate("/groups", { replace: true });
       }
     } catch (err) {
       alert("Error creating a group");
