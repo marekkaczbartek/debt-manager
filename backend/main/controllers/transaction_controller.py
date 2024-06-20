@@ -2,35 +2,42 @@ from services import debt_service
 from services import transaction_service
 from flask import request, jsonify
 from services import user_service, group_service
+from flask_jwt_extended import jwt_required
 
 
+@jwt_required()
 def get_transactions():
     transactions = transaction_service.get_transactions()
     return jsonify([t.to_json() for t in transactions]), 200
 
 
+@jwt_required()
 def get_transaction_by_id(transaction_id):
     transaction = transaction_service.get_transaction_by_id(transaction_id)
     return jsonify(transaction.to_json()), 200
 
 
+@jwt_required()
 def settle_transaction_by_id(transaction_id):
     amount: int = request.get_json().get("amount")
     transaction = transaction_service.settle_transaction_by_id(transaction_id, amount)
     return jsonify(transaction.to_json()), 200
 
 
+@jwt_required()
 def delete_transactions():
     transaction_service.delete_transactions()
     return jsonify({"message": "Transactions deleted"}), 204
 
 
+@jwt_required()
 def delete_transaction_by_id(transaction_id: int):
     transaction = transaction_service.delete_transaction_by_id(transaction_id)
     if transaction:
         return jsonify(transaction.to_json()), 204
 
 
+@jwt_required()
 def add_transaction_for_multiple_users():
     data = request.get_json()
     amount = data.get("amount")

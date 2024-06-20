@@ -1,12 +1,6 @@
 from flask import request, jsonify
-from config import app
-from datetime import datetime, timedelta
 from flask_jwt_extended import (
     create_access_token,
-    create_refresh_token,
-    jwt_required,
-    get_jwt_identity,
-    set_access_cookies,
 )
 
 from services.auth_service import validate_user

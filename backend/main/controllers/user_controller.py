@@ -3,6 +3,7 @@ from services import user_service
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
+@jwt_required()
 def get_users():
     users = user_service.get_users()
     return [user.to_json() for user in users]
@@ -15,6 +16,7 @@ def get_current_user():
     return current_user.to_json()
 
 
+@jwt_required()
 def get_user_by_id(user_id: int):
     user = user_service.get_user_by_id(user_id)
     if user:
@@ -22,6 +24,7 @@ def get_user_by_id(user_id: int):
     return jsonify({"error": "User not found"}), 404
 
 
+@jwt_required()
 def get_user_by_email(user_email: str):
     user = user_service.get_user_by_email(user_email)
     if user:
@@ -49,6 +52,7 @@ def create_user():
     return jsonify({"message": "User created", "data": user.to_json()}), 201
 
 
+@jwt_required()
 def delete_user(user_id: int):
     user = user_service.delete_user(user_id)
     if user:
@@ -56,7 +60,7 @@ def delete_user(user_id: int):
     return jsonify({"error": "User not found"}), 404
 
 
-# @jwt_required()
+@jwt_required()
 def get_groups_from_user(user_id: int):
     if not user_service.get_user_by_id(user_id):
         return jsonify({"error": "User not found"}), 404

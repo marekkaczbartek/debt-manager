@@ -1,15 +1,14 @@
-from itertools import islice
 from typing import List
-from models import Transaction, Group
+from models import Transaction, Group, User
 from config import db
 from services import user_service
 
 
-def get_groups():
+def get_groups() -> List[Group]:
     return Group.query.all()
 
 
-def get_group_by_id(group_id: int):
+def get_group_by_id(group_id: int) -> Group:
     return Group.query.get(group_id)
 
 
@@ -34,7 +33,7 @@ def add_user_to_group(user_id: int, group_id: int):
     db.session.commit()
 
 
-def get_users_from_group(group_id: int):
+def get_users_from_group(group_id: int) -> List[User]:
     return get_group_by_id(group_id).users
 
 
