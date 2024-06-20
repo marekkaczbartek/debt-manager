@@ -28,3 +28,5 @@ To run the app, run the following commands from the root directory of the projec
 - `cd frontend`
 - `npm install`
 - `npm run dev`
+
+The app runs on `http://localhost:5173/`
