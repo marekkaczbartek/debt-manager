@@ -19,9 +19,9 @@ To run the app, run the following commands from the root directory of the projec
 
 ### Backend
 
-`cd backend`
-`pip install -r requirements.txt`
-`python main/app.py`
+- `cd backend`
+- `pip install -r requirements.txt`
+- `python main/app.py`
 
 ### Frontend
 
