@@ -25,6 +25,6 @@ To run the app, run the following commands from the root directory of the projec
 
 ### Frontend
 
-`cd frontend`
-`npm install`
-`npm run dev`
+- `cd frontend`
+- `npm install`
+- `npm run dev`
