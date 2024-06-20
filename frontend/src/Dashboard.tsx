@@ -43,7 +43,7 @@ function Dashboard(user: User) {
     fetchGroups();
   }, [user]);
 
-  function chunkArrayIntoThrees(arr) {
+  function chunkArrayIntoThrees(arr: (Group | null)[]) {
     const result = [];
     for (let i = 0; i < arr.length; i += 3) {
       const chunk = arr.slice(i, i + 3);
@@ -104,7 +104,7 @@ function Dashboard(user: User) {
             return (
               <div key={index} className="my-4">
                 <div className="flex flex-row justify-evenly">
-                  {rows[index].map((group: Group) => {
+                  {rows[index].map((group: Group | null) => {
                     return group !== null ? (
                       <div key={group.id}>
                         <GroupCard

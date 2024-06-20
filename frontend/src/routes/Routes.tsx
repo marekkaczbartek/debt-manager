@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import GroupDashboard from "../GroupDashboard";
 import Dashboard from "../Dashboard";
-import AddUserForm from "../forms/AddUserForm";
-import AddTransactionForm from "../forms/AddTransactionForm";
 import Home from "../Home";
 
 const Routes = () => {
@@ -47,7 +45,7 @@ const Routes = () => {
       element: <ProtectedRoute {...user} />,
       children: [
         {
-          path: "/",
+          path: "/home",
           element: <Home {...user} />,
         },
         {
@@ -62,19 +60,10 @@ const Routes = () => {
           path: "/groups/:groupId",
           element: <GroupDashboard {...user} />,
         },
-        {
-          path: "/groups/:groupId/add/user",
-          element: <AddUserForm />,
-        },
-        {
-          path: "/groups/:groupId/add/transaction",
-          element: <AddTransactionForm {...user} />,
-        },
       ],
     },
   ];
 
-  // Define routes accessible only to non-authenticated users
   const routesForNotAuthenticatedOnly = [
     {
       path: "/",
@@ -92,13 +81,11 @@ const Routes = () => {
     },
   ];
 
-  // Combine and conditionally include routes based on authentication status
   const router = createBrowserRouter([
     ...(!accessToken ? routesForNotAuthenticatedOnly : []),
     ...routesForAuthenticatedOnly,
   ]);
 
-  // Provide the router configuration using RouterProvider
   return <RouterProvider router={router} />;
 };
 

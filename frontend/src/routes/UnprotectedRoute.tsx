@@ -6,7 +6,9 @@ export const UnprotectedRoute = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NoAuthNavbar />
-      <Outlet />
+      <div className="flex flex-grow justify-center items-center">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );
