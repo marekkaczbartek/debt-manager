@@ -4,8 +4,8 @@ This is a simple debt manager web app, that allows users to keep track of their 
 
 ## Pre-requisites
 
-- Python 3.11.8+
-- pip 23.3.1+
+- Python 3.11+
+- pip 23.3+
 - Node 18.13+
 - npm 8.1+
 
